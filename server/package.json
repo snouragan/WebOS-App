@@ -1,0 +1,15 @@
+{
+  "name": "lg_server",
+  "version": "1.0.0",
+  "description": "LG Array Server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "janelu",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
