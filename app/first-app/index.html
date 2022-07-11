@@ -4,7 +4,6 @@
 <head>
 	<title>Alo</title>
 	<style type="text/css">
-
 		html {
 			height: 100vh;
 
@@ -24,31 +23,27 @@
 		}
 
 		div.bg {
-			/* border: 30px solid beige; */
 			position: fixed;
 			top: 0;
 			left: 0;
 			right: 0;
-			bottom: 0;	
+			bottom: 0;
 			height: auto;
 			width: auto;
 			background: rgb(255, 255, 255);
-
-			/* animation: bg-blink 1s linear infinite;
-			-webkit-animation: bg-blink 1s linear infinite; */
 		}
 
 		div.container {
-			width: 900px;
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			height: auto;
+			width: auto;
 
 			transform-origin: center;
 			-webkit-transform-origin: center;
-
-			transform: translateX(300px) rotate(-90deg);
-			-webkit-transform: translateX(300px) rotate(-90deg);
-
-			/* animation: init 5s linear infinite;
-			-webkit-animation: init 5s linear infinite; */
 
 			display: flex;
 			display: -webkit-flex;
@@ -63,180 +58,105 @@
 			-webkit-justify-content: start;
 		}
 
-		p.title {
-			margin: 1000px 50px 0 50px;
-			max-width: 1080px;
-			color: red;
-			font-size: 70pt;
-			text-transform: uppercase;
-			font-weight: 500;
-			text-align: center;
+		video#video {
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			height: auto;
+			width: auto;
 		}
-
-		p.timestamp {
-			margin: 100px 50px 0 50px;
-			max-width: 1080px;
-			color: red;
-			font-size: 100pt;
-			text-transform: uppercase;
-			font-weight: 500;
-			text-align: center;
-		}
-
-		img {
-			transform: scale(0.1);
-			-webkit-transform: scale(0.1);
-		}
-
-		img.spin {
-			animation: moky-spin 1s linear;
-			-webkit-animation: moky-spin 1s linear;
-		}
-
-		img.spinrev {
-			animation: moky-spin 5s linear infinite reverse;
-			-webkit-animation: moky-spin 5s linear infinite reverse;
-		}
-
-		div.button {
-			margin: 200px 0 0 0;
-			width: 400px;
-			height: 200px;
-			background: beige;
-
-			display: flex;
-			display: -webkit-flex;
-
-			align-items: center;
-			-webkit-align-items: center;
-
-			justify-content: center;
-			-webkit-justify-content: center;
-
-			font-size: 50pt;
-			color: rgb(87, 0, 0);
-
-			transition: all .5s ease-in-out;
-			-webkit-transition: all .5s ease-in-out;
-		}
-
-		div.button:hover {
-			transform: scale(1.2);
-			-webkit-transform: scale(1.2);
-		}
-
-		
-		@keyframes bg-blink {
-			0% { border: 30px dotted white; }
-			50% { border: 30px dotted transparent; }
-			100% { border: 30px dotted white; }
-		}
-
-		@-webkit-keyframes bg-blink {
-			0% { border: 30px dotted white; }
-			50% { border: 30px dotted transparent; }
-			100% { border: 30px dotted white; }
-		}
-
-
-		@keyframes title-blink {
-			0% { color: white; }
-			50% { color: transparent; }
-			100% { color: white; }
-		}
-
-		@-webkit-keyframes title-blink {
-			0% { color: white; }
-			50% { color: transparent; }
-			100% { color: white; }
-		}
-
-
-		@keyframes moky-spin {
-			0% { transform: scale(0.1) rotate(0deg); }
-			50% { transform: scale(0.4) rotate(180deg);}
-			100% { transform: scale(0.1) rotate(360deg); }	
-		}
-
-		@-webkit-keyframes moky-spin {
-			0% { -webkit-transform: scale(0.1) rotate(0deg); }
-			50% { -webkit-transform: scale(0.4) rotate(180deg); }
-			100% { -webkit-transform: scale(0.1) rotate(360deg); }	
-		}
-
-
-		@keyframes init {
-			0% { transform: translateX(400px) rotate(0deg); }
-			40% { transform: translateX(400px) rotate(0deg); }
-			60% { transform: translateX(400px) rotate(-90deg); }
-			100% { transform: translateX(400px) rotate(-90deg); }
-		}
-
-		@-webkit-keyframes init {
-			0% { -webkit-transform: translateX(400px) rotate(0deg); }
-			40% { -webkit-transform: translateX(400px) rotate(0deg); }
-			60% { -webkit-transform: translateX(400px) rotate(-90deg); }
-			100% { -webkit-transform: translateX(400px) rotate(-90deg); }
-		}
-
 	</style>
-</head>
 
-<script src="webOSTVjs-1.2.4/webOSTV.js" charset="utf-8"></script>
-<script src="webOSTVjs-1.2.4/webOSTV-dev.js" charset="utf-8"></script>
+	<script src="webOSTVjs-1.2.4/webOSTV.js" charset="utf-8"></script>
+	<script src="webOSTVjs-1.2.4/webOSTV-dev.js" charset="utf-8"></script>
+
+</head>
 
 <body>
 	<div class="bg">
 	</div>
 	<div class="container">
-		<p class="title">title</p>
-		<p class="timestamp">null</p>
-		<img class="moky spin" src="./assets/vodafone.png"/>
+		<p id="timer" style="position:absolute; font-size:60pt; color: black; z-index: 5"></p>
+		<video height="300" muted id="video">
+			<!-- <source src="http://192.168.108.246:8069/sdata/untitled.webm" type="video/webm; codecs=vp9"> -->
+		</video>
 	</div>
-</body>
 
-<script type="text/javascript">
-	const ip = '192.168.64.221'
-	const url = 'http://' + ip + ':3000/'
-	fetch(url, {
-		method: 'GET'
-	})
-	.then(res => res.json())
-	.then(data => {
-		document.querySelector('p.title').innerHTML = data.name + ' : ' + data.ip;
-	})
-	.catch(reason => {
-		document.querySelector('p.title').innerHTML = 'ERROR';
-	});
+	<script type="text/javascript">
 
-	const img = document.querySelector('img');
+		let initialized = false;
 
-	img.addEventListener('animationend', () => {
-		img.classList.remove('spin');
-	})
+		let t = 0;
 
-	const start = (new Date()).getTime();
+		let videoFile = undefined;
 
-	setInterval(() => {
-		fetch('http://' + ip + ':3000/time', {
+		const ip = '192.168.95.167:8069';
+
+		fetch('http://' + ip + '/sdata/untitled.webm', {
 			method: 'GET'
+		}).then(res => res.blob()).then(blob => { videoFile = blob; display(videoFile, videoElement); document.getElementById('timer').innerHTML = 'LOADED'; console.log('loaded video'); t = 10 });
+
+		const videoElement = document.getElementById("video");
+		videoElement.addEventListener('ended', () => {
+			videoElement.currentTime = 0;
+
+			fetch('http://' + ip + '/sync', {
+				method: 'GET'
+			}).then(res => {
+				videoElement.play();
+			});
+			// video.play();
 		})
-		.then(res => res.json())
-		.then(data => {
-			const latency = (new Date()).getTime() - start;
-			const d = new Date(data.time);
-			// d.setMilliseconds(d.getMilliseconds() + latency / 2);
-			// console.log(d);
-			document.querySelector('p.timestamp').innerHTML = d.getHours() + ':' + (d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes()) + ':' + (d.getSeconds() < 10 ? '0' + d.getSeconds() : d.getSeconds());
-			
-			if(d.getSeconds() % 5 == 0) {
-				console.log(img.classList);
-				img.classList.add('spin');
+		const initInterval = setInterval(() => {
+			if (initialized) {
+				clearInterval(initInterval)
 			}
-		});
-	}, 40);
+			if (t !== 0) {
+				console.log(t);
+				t--;
+				document.getElementById('timer').innerHTML = t;
+				if (t === 0) {
+					fetch('http://' + ip + '/sync', {
+						method: 'GET'
+					}).then(res => {
+						initialized = true;
+						videoElement.play();
+					});
+				}
+			}
+		}, 1000);
 
-</script>
 
+		function display(videoFile, videoEl) {
+
+			// Preconditions:
+			if (!(videoFile instanceof Blob)) throw new Error('`videoFile` must be a Blob or File object.'); // The `File` prototype extends the `Blob` prototype, so `instanceof Blob` works for both.
+			if (!(videoEl instanceof HTMLVideoElement)) throw new Error('`videoEl` must be a <video> element.');
+
+			// 
+
+			const newObjectUrl = URL.createObjectURL(videoFile);
+
+			// URLs created by `URL.createObjectURL` always use the `blob:` URI scheme: https://w3c.github.io/FileAPI/#dfn-createObjectURL
+			const oldObjectUrl = videoEl.currentSrc;
+			if (oldObjectUrl && oldObjectUrl.startsWith('blob:')) {
+				// It is very important to revoke the previous ObjectURL to prevent memory leaks. Un-set the `src` first.
+				// See https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL
+
+				videoEl.src = ''; // <-- Un-set the src property *before* revoking the object URL.
+				URL.revokeObjectURL(oldObjectUrl);
+			}
+
+			// Then set the new URL:
+			videoEl.src = newObjectUrl;
+
+			// And load it:
+			videoEl.load(); // https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/load
+		}
+	</script>
+
+</body>
 
 </html>
