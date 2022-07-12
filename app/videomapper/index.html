@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Alo</title>
+	<title>Video Mapper</title>
 	<style type="text/css">
 		html {
 			height: 100vh;
@@ -71,54 +71,56 @@
 
 	<script src="webOSTVjs-1.2.4/webOSTV.js" charset="utf-8"></script>
 	<script src="webOSTVjs-1.2.4/webOSTV-dev.js" charset="utf-8"></script>
-
+	<script src="config.js"></script>
 </head>
 
 <body>
 	<div class="bg">
 	</div>
 	<div class="container">
-		<p id="timer" style="position:absolute; font-size:60pt; color: black; z-index: 5"></p>
-		<video height="300" muted id="video">
-			<!-- <source src="http://192.168.108.246:8069/sdata/untitled.webm" type="video/webm; codecs=vp9"> -->
-		</video>
+		<video muted id="video"></video>
 	</div>
 
 	<script type="text/javascript">
 
-		let initialized = false;
-
-		let t = 0;
+		const videoElement = document.getElementById("video");
 
 		let videoFile = undefined;
 
-		const ip = '192.168.95.167:8069';
+		let initialized = false;
 
-		fetch('http://' + ip + '/sdata/untitled.webm', {
+		let timeout = 0;
+
+		// Fetch video file and save as blob:
+		fetch('http://' + SERVER_IP + '/sdata/untitled.webm', {
 			method: 'GET'
-		}).then(res => res.blob()).then(blob => { videoFile = blob; display(videoFile, videoElement); document.getElementById('timer').innerHTML = 'LOADED'; console.log('loaded video'); t = 10 });
+		}).then(res => res.blob()).then(blob => {
+			videoFile = blob;
+			display(videoFile, videoElement);
+			if (LOGGING) {
+				console.log('loaded video');
+			}
+			timeout = INIT_TIMEOUT;
+		});
 
-		const videoElement = document.getElementById("video");
-		videoElement.addEventListener('ended', () => {
-			videoElement.currentTime = 0;
-
-			fetch('http://' + ip + '/sync', {
-				method: 'GET'
-			}).then(res => {
-				videoElement.play();
-			});
-			// video.play();
-		})
+		// Start init cooldown after receiving video file:
 		const initInterval = setInterval(() => {
+
+			// Clear interval once initialized:
 			if (initialized) {
 				clearInterval(initInterval)
 			}
-			if (t !== 0) {
-				console.log(t);
-				t--;
-				document.getElementById('timer').innerHTML = t;
-				if (t === 0) {
-					fetch('http://' + ip + '/sync', {
+
+			// If video file is loaded, start countdown:
+			if (timeout !== 0) {
+				if (LOGGING) {
+					console.log(timeout);
+				}
+				timeout--;
+
+				// Request sync from server when countdown reaches zero:
+				if (timeout === 0) {
+					fetch('http://' + SERVER_IP + '/sync', {
 						method: 'GET'
 					}).then(res => {
 						initialized = true;
@@ -128,7 +130,19 @@
 			}
 		}, 1000);
 
+		// Ask for server sync when playback ends:
+		videoElement.addEventListener('ended', () => {
+			fetch('http://' + SERVER_IP + '/sync', {
+				method: 'GET'
+			}).then(res => {
+				videoElement.currentTime = 0;
+				videoElement.play();
+			});
+		});
 
+
+		
+		// source: https://stackoverflow.com/questions/14317179/display-a-video-from-a-blob-javascript
 		function display(videoFile, videoEl) {
 
 			// Preconditions:
