@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "vendor": "Senior",
   "type": "web",
-  "main": "index.html",
+  "main": "public/index.html",
   "title": "Video Mapper",
   "icon": "icons/videomapper_small.png",
   "largeIcon": "icons/videomapper_large.png"
