@@ -1,0 +1,88 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --boxColor: rgba(0, 255, 255, 0.322);
+}
+
+html,
+body {
+    overflow: hidden;
+    background-color: #000;
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 75px;
+    -moz-perspective: 10em;
+    -moz-perspective-origin: 50% calc(50% - 2em);
+}
+
+.scene {
+    position: relative;
+    transform-style: preserve-3d;
+}
+
+.box {
+    height: 3em;
+    width: 2em;
+    background: var(--boxColor);
+    position: absolute;
+    top: -1em;
+    left: -1em;
+
+    .left,
+    .right,
+    .front,
+    .back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: var(--boxColor);
+    }
+
+    .front {
+        transform: translateZ(1em);
+    }
+
+    .right {
+        transform: rotateY(90deg) translateZ(1em);
+    }
+
+    .back {
+        transform: rotateY(180deg) translateZ(1em);
+    }
+
+    .left {
+        transform: rotateY(270deg) translateZ(1em);
+    }
+
+    .top {
+        position: absolute;
+        width: 2em;
+        height: 2em;
+        // background: var(--boxColor);
+        background: rgba(255, 0, 0, 0.312);
+        -moz-transform: translateY(-50%) rotateX(90deg);
+    }
+
+    .bottom {
+
+    }
+}
+
+.floor {
+    position: absolute;
+    top: -3em;
+    transform: translate(-50%, 50%) rotateX(90deg);
+    width: 20em;
+    height: 5em;
+    background-image:
+        radial-gradient(#0000, #000 75%),
+        repeating-conic-gradient(from 45deg, #111 0 90deg, #222 90deg 180deg);
+    background-size: 100%, 1em 1em;
+}
