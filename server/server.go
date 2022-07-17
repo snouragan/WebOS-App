@@ -2,7 +2,6 @@ package main
 
 import (
 	"net/http"
-	"os"
 	"path"
 	"strings"
 
@@ -21,12 +20,12 @@ func init() {
 	}
 }
 
-func logrq(r *http.Request) {
-	log.Info("Request", zap.String("Resourse", r.URL.Path), zap.String("From", fmtip(r.RemoteAddr)))
+func logrq(r *http.Request, handler string) {
+	log.Info("Request", zap.String("Resourse", r.URL.Path), zap.String("Handler", handler), zap.String("From", fmtip(r.RemoteAddr)))
 }
 
-func splitdata(w http.ResponseWriter, r *http.Request) {
-	logrq(r)
+func split(w http.ResponseWriter, r *http.Request) {
+	logrq(r, "split")
 
 	tv := tvidstring(r.RemoteAddr)
 
@@ -34,39 +33,53 @@ func splitdata(w http.ResponseWriter, r *http.Request) {
 		tv = "1"
 	}
 
-	res := strings.TrimPrefix(r.URL.Path, "/sdata")
+	res := strings.TrimPrefix(r.URL.Path, "/split")
 	ext := path.Ext(res)
 	res = strings.TrimSuffix(res, ext)
 
-	res = "/data" + res + tv + ext
+	res = "/sdata" + res + "." + tv + ext
 
-	w.Header().Add("Access-Control-Allow-Origin", "*")
 	http.Redirect(w, r, res, http.StatusFound)
 }
 
 func cors(fs http.Handler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		logrq(r)
+		logrq(r, "cors")
 
-		w.Header().Add("Access-Control-Allow-Origin", "*")
 		fs.ServeHTTP(w, r)
 	}
 }
 
-func main() {
-	s := newsyncplay()
+func addAccessControlAllowOrigin() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Add("Access-Control-Allow-Origin", "*")
 
-	go s.syncd()
+		http.DefaultServeMux.ServeHTTP(w, r)
+	}
+}
+
+func runServer() {
+	s := newsyncplay()
 
 	http.Handle("/sync", s)
 	http.Handle("/sync/", s)
 
-	home, _ := os.UserHomeDir()
+	c := newcontroller()
 
-	fs := http.FileServer(http.Dir(home + "/httpdata"))
-	http.Handle("/data/", cors(fs))
+	http.Handle("/poll", c)
+	http.Handle("/ctl/", c)
 
-	http.HandleFunc("/sdata/", splitdata)
+	http.HandleFunc("/ctl/upload", upload)
+	http.HandleFunc("/ctl/list", list)
+	http.HandleFunc("/ctl/prepare/", prepare)
 
-	log.Fatal("Fatal server error", zap.String("Error", http.ListenAndServe(":8069", nil).Error()))
+	http.HandleFunc("/split/", split)
+
+	fs := http.FileServer(http.Dir(options.dir))
+	fsh := cors(fs)
+	http.Handle("/data/", fsh)
+	http.Handle("/sdata/", fsh)
+
+	err := http.ListenAndServe(":8069", addAccessControlAllowOrigin())
+	log.Fatal("Fatal server error", zap.String("Error", err.Error()))
 }

@@ -23,11 +23,13 @@ func newsyncplay() *syncplay {
 		s.play[i] = make(chan struct{})
 	}
 
+	go s.syncd()
+
 	return s
 }
 
 func (s *syncplay) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	logrq(r)
+	logrq(r, "syncplay")
 
 	tv := tvid(r.RemoteAddr)
 
@@ -37,7 +39,6 @@ func (s *syncplay) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		tv, err = strconv.Atoi(path.Base(r.URL.Path))
 
 		if err != nil {
-			w.Header().Add("Access-Control-Allow-Origin", "*")
 			w.Header().Add("Content-Type", "text/plain")
 			fmt.Fprintln(w, "not a tv")
 
@@ -49,7 +50,6 @@ func (s *syncplay) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	<-s.play[tv]
 
-	w.Header().Add("Access-Control-Allow-Origin", "*")
 	w.Header().Add("Content-Type", "text/plain")
 	fmt.Fprintln(w, "sync")
 
@@ -62,8 +62,6 @@ func (s *syncplay) syncd() {
 		tv := <-s.arrival
 
 		waitvar = waitvar | (1 << tv)
-
-		fmt.Printf("%b\n", waitvar)
 
 		if waitvar == 0b111111 {
 			for _, c := range s.play {
