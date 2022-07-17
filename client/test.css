@@ -5,7 +5,9 @@
 }
 
 :root {
-  --boxColor: rgba(0, 255, 255, 0.308);
+  --boxColor: #0ff7;
+  --perspectiveValue: 10em;
+  --rotateSpeed: 30s;
 }
 
 html,
@@ -18,8 +20,8 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 75px;
-  perspective: 10em;
-  -moz-perspective: 10em;
+  perspective: var(--perspectiveValue);
+  -moz-perspective: var(--perspectiveValue);
   perspective-origin: 50% calc(50% - 2em);
   -moz-perspective-origin: 50% calc(50% - 2em);
 }
@@ -28,18 +30,38 @@ body {
   position: relative;
   transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
+  -webkit-animation: sceneRotate var(--rotateSpeed) infinite linear;
+          animation: sceneRotate var(--rotateSpeed) infinite linear;
+  -moz-animation: sceneRotate var(--rotateSpeed) infinite linear;
+}
+@-webkit-keyframes sceneRotate {
+  to {
+    transform: rotateY(360deg);
+  }
+}
+@keyframes sceneRotate {
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+.box div {
+  transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
 }
 
 .box {
-  perspective: 5em;
-  -moz-perspective: 5em;
+  perspective: var(--perspectiveValue);
+  -moz-perspective: var(--perspectiveValue);
   perspective-origin: 50% calc(50% - 2em);
   -moz-perspective-origin: 50% calc(50% - 2em);
+  transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
   height: 3em;
   width: 2em;
   background: transparent;
   position: absolute;
-  top: -2em;
+  top: -1.1em;
   left: -1em;
 }
 .box .left,
@@ -50,24 +72,30 @@ body {
   width: 100%;
   height: 100%;
   background: var(--boxColor);
+  box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.6666666667) inset;
 }
 .box .front {
   transform: translateZ(1em);
+  -moz-transform: translateZ(1em);
 }
 .box .right {
   transform: rotateY(90deg) translateZ(1em);
+  -moz-transform: rotateY(90deg) translateZ(1em);
 }
 .box .back {
   transform: rotateY(180deg) translateZ(1em);
+  -moz-transform: rotateY(180deg) translateZ(1em);
 }
 .box .left {
   transform: rotateY(270deg) translateZ(1em);
+  -moz-transform: rotateY(270deg) translateZ(1em);
 }
 .box .top {
   position: absolute;
   width: 2em;
   height: 2em;
-  background: var(--boxColor);
+  background: #fff;
+  box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.6666666667) inset;
   transform: translateY(-50%) rotateX(90deg);
   -moz-transform: translateY(-50%) rotateX(90deg);
 }
@@ -75,15 +103,17 @@ body {
   position: absolute;
   width: 2em;
   height: 2em;
-  background: var(--boxColor);
+  background: rgba(0, 0, 0, 0.4666666667);
   transform: translateY(100%) rotateX(90deg);
-  -moz-transform: translateY(10 0%) rotateX(90deg);
+  -moz-transform: translateY(50%) rotateX(90deg);
+  box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.096) inset;
 }
 
 .floor {
   position: absolute;
   top: -3em;
-  transform: translate(-50%, 50%) rotateX(90deg);
+  transform: translate(-50%, 50%) rotateX(90deg) scale(2);
+  transform-origin: bottom center;
   width: 20em;
   height: 5em;
   background-image: radial-gradient(rgba(0, 0, 0, 0), #000 75%), repeating-conic-gradient(from 45deg, #111 0 90deg, #222 90deg 180deg);
