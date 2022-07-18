@@ -1,4 +1,4 @@
-const SERVER_IP = '192.168.84.7:8069';
+const SERVER_IP = '192.168.1.15:8069';
 
 const INIT_TIMEOUT = 10;
 
