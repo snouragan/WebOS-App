@@ -22,6 +22,16 @@ window.addEventListener('dragleave', (e) => {
 window.addEventListener('drop', (e) => {
     e.preventDefault();
 
+    const file = e.dataTransfer.items[0].getAsFile();
+    console.log('dropped ' + file);
+    const data = new FormData(document.getElementById('form'));
+    data.append('file', file)
+    fetch('http://192.168.1.15:8069/ctl/upload', {
+        method: 'POST',
+        body: data
+    });
+
+
     prompt.innerHTML = 'Drop file here or click to upload';
     dropZone.classList.remove('dragging');
 });
@@ -30,14 +40,14 @@ dropZone.addEventListener('drop', (e) => {
     e.preventDefault();
     e.stopPropagation();
 
-    // const file = e.dataTransfer.items[0].getAsFile();
-    // console.log('dropped ' + file);
-    // const data = new FormData(document.getElementById('form'));
-    // data.append('file', file)
-    // fetch('http://192.168.84.7:8069/ctl/upload', {
-    //     method: 'POST',
-    //     body: data
-    // });
+    const file = e.dataTransfer.items[0].getAsFile();
+    console.log('dropped ' + file);
+    const data = new FormData(document.getElementById('form'));
+    data.append('file', file)
+    fetch('http://192.168.1.15:8069/ctl/upload', {
+        method: 'POST',
+        body: data
+    });
 });
 
 fileInput.addEventListener('change', () => {

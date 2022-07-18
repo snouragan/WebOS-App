@@ -13,6 +13,11 @@
 <body>
     <div class="container">
 
+        <div class="playpause">
+            <div class="play">play</div>
+            <div class="pause">pause</div>
+        </div>
+
         <div class="TV-container">
             <div id="0" class="TV left"></div>
             <div id="1" class="TV center"></div>
@@ -20,41 +25,6 @@
             <div id="3" class="TV center"></div>
             <div id="4" class="TV center"></div>
             <div id="5" class="TV right"></div>
-
-        </div>
-
-        <div class="button-container">
-
-            <div id="TV0" onclick="toggleEnable(this.id)" class="glass-btn lime-btn">
-                <img src="./TV.png" alt="TV0" style="width: 5.5em;">
-                <p class="btn-number">0</p>
-            </div>
-
-            <div id="TV1" onclick="toggleEnable(this.id)" class="glass-btn lime-btn">
-                <img src="./TV.png" alt="TV1" style="width: 5.5em;">
-                <p class="btn-number">1</p>
-            </div>
-
-            <div id="TV2" onclick="toggleEnable(this.id)" class="glass-btn lime-btn">
-                <img src="./TV.png" alt="TV2" style="width: 5.5em;">
-                <p class="btn-number">2</p>
-            </div>
-
-            <div id="TV3" onclick="toggleEnable(this.id)" class="glass-btn lime-btn">
-                <img src="./TV.png" alt="TV3" style="width: 5.5em;">
-                <p class="btn-number">3</p>
-            </div>
-
-            <div id="TV4" onclick="toggleEnable(this.id)" class="glass-btn lime-btn">
-                <img src="./TV.png" alt="TV4" style="width: 5.5em;">
-                <p class="btn-number">4</p>
-            </div>
-
-            <div id="TV5" onclick="toggleEnable(this.id)" class="glass-btn lime-btn">
-                <img src="./TV.png" alt="TV5" style="width: 5.5em;">
-                <p class="btn-number">5</p>
-            </div>
-
         </div>
 
         <div class="drop-zone" id="drop-zone">
@@ -71,4 +41,5 @@
     <script src="./tv_buttons.js"></script>
     <script src="./tv.js"></script>
     <script type="text/javascript" src="dropzone.js"></script>
+    <script src="files.js"></script>
 </body>

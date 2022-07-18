@@ -105,3 +105,25 @@ div.drop-zone.dragging span.drop-zone-prompt {
 input.file-input {
     display: none;
 }
+
+.play, .pause{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border: 5px solid black;
+    border-radius: 10px;
+    background-color: white;
+    margin: 10px;
+    transition: all .5s ease-in-out;
+}
+
+.playpause {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    cursor: pointer;
+}
+
