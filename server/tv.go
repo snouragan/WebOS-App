@@ -10,17 +10,17 @@ func tvid(ip string) int {
 	ip = m[0]
 
 	switch ip {
-	case "192.168.81.63":
+	case "192.168.1.21":
 		return 0
-	case "192.168.88.30":
+	case "192.168.1.20":
 		return 1
-	case "192.168.123.118":
+	case "192.168.1.19":
 		return 2
-	case "192.168.104.210":
+	case "192.168.1.18":
 		return 3
-	case "192.168.93.19":
+	case "192.168.1.17":
 		return 4
-	case "192.168.85.179":
+	case "192.168.1.16":
 		return 5
 	}
 

@@ -14,7 +14,7 @@ const videoContext = 'VIDEO';
  * Resume video playback.
  */
 function resumePlayback() {
-    videoElement.play();
+    sync();
 }
 
 /**
@@ -42,10 +42,10 @@ function loadVideo(src) {
     }).then(res => res.blob()).then(blob => {
         videoFile = blob;
         display(videoFile, videoElement);
-        log(commandsContext, 'Loaded video: ' + src, INFO);
+        log(videoContext, 'Loaded video: ' + src, INFO);
         sync();
     }).catch(e => {
-        log(commandsContext, 'Failed to fetch video. Reason: ' + e, ERROR);
+        log(videoContext, 'Failed to fetch video. Reason: ' + e, ERROR);
     });
 }
 
@@ -56,10 +56,11 @@ function sync() {
     fetch('http://' + SERVER_IP + '/sync', {
         method: 'GET'
     }).then(res => {
-        videoElement.currentTime = 0;
-        videoElement.play();
+        videoElement.play().catch(() => {
+            log(videoContext, 'Error playing video', ERROR);
+        });
     }).catch(e => {
-        log(commandsContext, 'Failed to sync. Reason: ' + e, ERROR);
+        log(videoContext, 'Failed to sync. Reason: ' + e, ERROR);
     });
 }
 
@@ -90,9 +91,10 @@ function display(videoFile, videoEl) {
 videoElement.addEventListener('ended', () => {
     videoElement.currentTime = 0;
     if (loop) {
+        videoElement.currentTime = 0;
         sync();
     }
 });
 
 // Load default video:
-loadVideo('/sdata/untitled.webm');
+loadVideo('/split/sample.6.stretch.webm');

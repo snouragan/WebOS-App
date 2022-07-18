@@ -47,14 +47,17 @@ function handleCommand(command) {
     }
 
     if (command.command === 'play') {
+        log(commandsContext, 'command: play', INFO);
         return resumePlayback();
     }
 
     if (command.command === 'pause') {
+        log(commandsContext, 'command: pause', INFO);
         return pausePlayback();
     }
 
     if (command.command === 'seek' && command.pos) {
+        log(commandsContext, 'command: play', INFO);
         return seekVideo(command.pos);
     }
 
