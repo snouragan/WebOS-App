@@ -24,8 +24,8 @@ body {
     perspective: var(--perspectiveValue);
     -moz-perspective: var(--perspectiveValue);
 
-    perspective-origin: 50% calc(50% - 2em);
-    -moz-perspective-origin: 50% calc(50% - 2em);
+    perspective-origin: 50% calc(50% - 0em);
+    -moz-perspective-origin: 50% calc(50% - 0em);
 }
 
 .scene {
@@ -53,8 +53,8 @@ body {
     perspective: var(--perspectiveValue);
     -moz-perspective: var(--perspectiveValue);
     
-    perspective-origin: 50% calc(50% - 2em);
-    -moz-perspective-origin: 50% calc(50% - 2em);
+    perspective-origin: 50% calc(50% - 0em);
+    -moz-perspective-origin: 50% calc(50% - 0em);
 
     transform-style: preserve-3d;
     -moz-transform-style: preserve-3d;
@@ -63,7 +63,7 @@ body {
     width: 2em;
     background: transparent;
     position: absolute;
-    top: -1.1em;
+    top: -1.5em;
     left: -1em;
 
     .left,
@@ -109,6 +109,7 @@ body {
 
     .bottom {
         position: absolute;
+        bottom: 0em;
         width: 2em;
         height: 2em;
         background: #0007;
@@ -120,11 +121,19 @@ body {
 
 .floor {
     position: absolute;
-    top: -3em;
-    transform: translate(-50%, 50%) rotateX(90deg) scale(2.0);
-    transform-origin: bottom center;
-    width: 20em;
+    width:5em;
     height: 5em;
+    top: 1em;
+
+    transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+
+    transform: translate(-50%, 50%) rotateX(90deg) scale(10.0);
+    -moz-transform: translate(-50%, 50%) rotateX(90deg) scale(10.0);
+
+    transform-origin: bottom center;
+    -moz-transform-origin: bottom center;
+
     background-image:
         radial-gradient(#0000, #000 75%),
         repeating-conic-gradient(from 45deg, #111 0 90deg, #222 90deg 180deg);

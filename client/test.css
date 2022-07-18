@@ -22,8 +22,8 @@ body {
   font-size: 75px;
   perspective: var(--perspectiveValue);
   -moz-perspective: var(--perspectiveValue);
-  perspective-origin: 50% calc(50% - 2em);
-  -moz-perspective-origin: 50% calc(50% - 2em);
+  perspective-origin: 50% calc(50% - 0em);
+  -moz-perspective-origin: 50% calc(50% - 0em);
 }
 
 .scene {
@@ -53,15 +53,15 @@ body {
 .box {
   perspective: var(--perspectiveValue);
   -moz-perspective: var(--perspectiveValue);
-  perspective-origin: 50% calc(50% - 2em);
-  -moz-perspective-origin: 50% calc(50% - 2em);
+  perspective-origin: 50% calc(50% - 0em);
+  -moz-perspective-origin: 50% calc(50% - 0em);
   transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
   height: 3em;
   width: 2em;
   background: transparent;
   position: absolute;
-  top: -1.1em;
+  top: -1.5em;
   left: -1em;
 }
 .box .left,
@@ -101,6 +101,7 @@ body {
 }
 .box .bottom {
   position: absolute;
+  bottom: 0em;
   width: 2em;
   height: 2em;
   background: rgba(0, 0, 0, 0.4666666667);
@@ -111,11 +112,15 @@ body {
 
 .floor {
   position: absolute;
-  top: -3em;
-  transform: translate(-50%, 50%) rotateX(90deg) scale(2);
-  transform-origin: bottom center;
-  width: 20em;
+  width: 5em;
   height: 5em;
+  top: 1em;
+  transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  transform: translate(-50%, 50%) rotateX(90deg) scale(10);
+  -moz-transform: translate(-50%, 50%) rotateX(90deg) scale(10);
+  transform-origin: bottom center;
+  -moz-transform-origin: bottom center;
   background-image: radial-gradient(rgba(0, 0, 0, 0), #000 75%), repeating-conic-gradient(from 45deg, #111 0 90deg, #222 90deg 180deg);
   background-size: 100%, 1em 1em;
 }/*# sourceMappingURL=test.css.map */
