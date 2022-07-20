@@ -14,7 +14,7 @@ const videoContext = 'VIDEO';
  * Resume video playback.
  */
 function resumePlayback() {
-    sync();
+    syncPlay();
 }
 
 /**
@@ -22,6 +22,7 @@ function resumePlayback() {
  */
 function pausePlayback() {
     videoElement.pause();
+    syncCurrentPosition();
 }
 
 /**
@@ -30,38 +31,61 @@ function pausePlayback() {
  * @param {*} position - position to seek to.
  */
 function seekVideo(position) {
+    videoElement.pause();
     videoElement.currentTime = position;
+    syncPlay();
 }
 
 /**
  * Fetch video file and save as blob.
  */
 function loadVideo(src) {
+    stopPolling();
     fetch('http://' + SERVER_IP + src, {
         method: 'GET'
     }).then(res => res.blob()).then(blob => {
         videoFile = blob;
         display(videoFile, videoElement);
         log(videoContext, 'Loaded video: ' + src, INFO);
-        sync();
+        syncPlay();
     }).catch(e => {
         log(videoContext, 'Failed to fetch video. Reason: ' + e, ERROR);
+        startPolling();
     });
 }
 
 /**
- * Synchronize player with server.
+ * Synchronize player with other devices.
  */
-function sync() {
+function syncPlay() {
+    stopPolling();
     fetch('http://' + SERVER_IP + '/sync', {
         method: 'GET'
     }).then(res => {
         videoElement.play().catch(() => {
             log(videoContext, 'Error playing video', ERROR);
         });
+        startPolling();
     }).catch(e => {
         log(videoContext, 'Failed to sync. Reason: ' + e, ERROR);
+        startPolling();
     });
+}
+
+/**
+ * Synchronize pause position with other devices.
+ */
+function syncCurrentPosition() {
+    stopPolling();
+    fetch('http://' + SERVER_IP + '/sync', {
+        method: 'POST',
+        body: JSON.stringify({ 'time': videoElement.currentTime })
+    }).then(res => res.json()).then(data => {
+        if (data && data.time) {
+            videoContext.currentTime = data.time;
+            startPolling();
+        }
+    })
 }
 
 /**
@@ -92,9 +116,13 @@ videoElement.addEventListener('ended', () => {
     videoElement.currentTime = 0;
     if (loop) {
         videoElement.currentTime = 0;
-        sync();
+        syncPlay();
     }
 });
 
-// Load default video:
-loadVideo('/split/sample.6.stretch.webm');
+
+window.addEventListener('load', () => {
+    log(videoContext, 'Loaded video player', INFO); 
+    // Load default video:
+    loadVideo('/split/sample.6.stretch.webm');
+});

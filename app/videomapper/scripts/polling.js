@@ -57,8 +57,8 @@ function handleCommand(command) {
     }
 
     if (command.command === 'seek' && command.pos) {
-        log(commandsContext, 'command: play', INFO);
-        return seekVideo(command.pos);
+        log(commandsContext, 'command: seek ' + command.pos, INFO);
+        return seekVideo(parseInt(command.pos));
     }
 
     if (command.command === 'load' && command.src) {
