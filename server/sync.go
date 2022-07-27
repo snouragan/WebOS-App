@@ -2,25 +2,30 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
-	"path"
-	"strconv"
 
 	"go.uber.org/zap"
 )
 
 const spsz = 6
 
+type arrivalmsg struct {
+	tv   int
+	ct   string
+	body []byte
+}
+
 type syncplay struct {
-	arrival chan int
-	play    [spsz]chan struct{}
+	arrival chan arrivalmsg
+	play    [spsz]chan arrivalmsg
 }
 
 func newsyncplay() *syncplay {
-	s := &syncplay{arrival: make(chan int)}
+	s := &syncplay{arrival: make(chan arrivalmsg)}
 
 	for i := 0; i < spsz; i++ {
-		s.play[i] = make(chan struct{})
+		s.play[i] = make(chan arrivalmsg)
 	}
 
 	go s.syncd()
@@ -34,41 +39,65 @@ func (s *syncplay) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	tv := tvid(r.RemoteAddr)
 
 	if tv == -1 {
-		var err error
+		w.Header().Add("Content-Type", "text/plain")
+		fmt.Fprintln(w, "not a tv")
 
-		tv, err = strconv.Atoi(path.Base(r.URL.Path))
+		return
 
+	}
+
+	var msg arrivalmsg
+
+	if r.Method == "POST" {
+		ct := r.Header.Get("Content-Type")
+
+		body, err := ioutil.ReadAll(r.Body)
 		if err != nil {
-			w.Header().Add("Content-Type", "text/plain")
-			fmt.Fprintln(w, "not a tv")
+			w.WriteHeader(http.StatusBadRequest)
 
 			return
 		}
+
+		msg.tv = tv
+		msg.body = body
+		msg.ct = ct
+	} else {
+		msg.tv = tv
+		msg.body = []byte("sync")
+		msg.ct = "text/plain"
 	}
 
-	s.arrival <- tv
+	s.arrival <- msg
 
-	<-s.play[tv]
+	msg = <-s.play[tv]
 
-	w.Header().Add("Content-Type", "text/plain")
-	fmt.Fprintln(w, "sync")
+	w.Header().Add("Content-Type", msg.ct)
+	w.Write(msg.body)
 
-	log.Info("Sync Response", zap.String("From", fmtip(r.RemoteAddr)))
+	log.Info("Sync Response", zap.String("From", fmtip(r.RemoteAddr)), zap.String("Content-Type", msg.ct), zap.String("Response", string(msg.body)))
 }
 
 func (s *syncplay) syncd() {
 	waitvar := 0
+
+	var msgtosend arrivalmsg
 	for {
-		tv := <-s.arrival
+		msg := <-s.arrival
 
-		waitvar = waitvar | (1 << tv)
+		if msg.tv == 0 { // TODO: generalize
+			msgtosend = msg
+		}
 
-		if waitvar == 0b111111 {
+		waitvar = waitvar | (1 << msg.tv)
+
+		runState.RLock()
+		if waitvar == runState.tvs {
 			for _, c := range s.play {
-				c <- struct{}{}
+				c <- msgtosend
 			}
 
 			waitvar = 0
 		}
+		runState.RUnlock()
 	}
 }

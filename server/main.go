@@ -14,11 +14,13 @@ import (
 var embedFS embed.FS
 
 var options struct {
-	dir string
+	dir   string
+	debug bool
 }
 
 func init() {
 	flag.StringVar(&options.dir, "dir", "", "Server directory")
+	flag.BoolVar(&options.debug, "debug", false, "Debug mode")
 }
 
 func createDirIfNotExist() {

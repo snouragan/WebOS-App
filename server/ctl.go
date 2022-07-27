@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"path"
+
+	"go.uber.org/zap"
 )
 
 type command struct {
@@ -33,8 +35,6 @@ func newcontroller() *controller {
 }
 
 func (c *controller) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	logrq(r, "controller")
-
 	tv := tvid(r.RemoteAddr)
 
 	switch r.URL.Path {
@@ -47,6 +47,7 @@ func (c *controller) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 		select {
 		case comm = <-c.command[tv]:
+			log.Info("Poll response", zap.ByteString("Command", comm), zap.String("To", fmtip(r.RemoteAddr)))
 		default:
 			comm = nocomm
 		}
@@ -55,8 +56,12 @@ func (c *controller) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		w.Write(comm)
 
 	case "/ctl/pause":
+		logrq(r, "controller")
+
 		c.ctl(&command{Command: "pause"})
 	case "/ctl/play":
+		logrq(r, "controller")
+
 		c.ctl(&command{Command: "play"})
 	}
 

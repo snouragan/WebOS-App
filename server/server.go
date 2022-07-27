@@ -3,12 +3,20 @@ package main
 import (
 	"net/http"
 	"path"
+	"strconv"
 	"strings"
+	"sync"
 
 	"go.uber.org/zap"
 )
 
 var log *zap.Logger
+
+var runState struct {
+	*sync.RWMutex
+
+	tvs int
+}
 
 func init() {
 	var err error
@@ -21,7 +29,7 @@ func init() {
 }
 
 func logrq(r *http.Request, handler string) {
-	log.Info("Request", zap.String("Resourse", r.URL.Path), zap.String("Handler", handler), zap.String("From", fmtip(r.RemoteAddr)))
+	log.Info("Request", zap.String("Resourse", r.URL.Path), zap.String("Method", r.Method), zap.String("Handler", handler), zap.String("From", fmtip(r.RemoteAddr)))
 }
 
 func split(w http.ResponseWriter, r *http.Request) {
@@ -50,8 +58,26 @@ func cors(fs http.Handler) http.HandlerFunc {
 	}
 }
 
+func parseResourceURL(url string) (resource string, numtv int, sf string) {
+	s := strings.Split(url, "/")
+
+	s = s[len(s)-2:]
+
+	n, _ := strconv.Atoi(s[1])
+
+	// TODO: checks
+
+	return s[0], n, s[2]
+}
+
 func addAccessControlAllowOrigin() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		if options.debug && len(r.URL.Path) > 2 {
+			if n, err := strconv.Atoi(r.URL.Path[1:2]); err != nil && n >= 1 && n <= spsz {
+				r.RemoteAddr = idtv(n - 1)
+			}
+		}
+
 		w.Header().Add("Access-Control-Allow-Origin", "*")
 
 		http.DefaultServeMux.ServeHTTP(w, r)
@@ -59,10 +85,15 @@ func addAccessControlAllowOrigin() http.HandlerFunc {
 }
 
 func runServer() {
+	runState.tvs = 0b11111
+
 	s := newsyncplay()
 
 	http.Handle("/sync", s)
-	http.Handle("/sync/", s)
+
+	ps := newsyncplay()
+
+	http.Handle("/syncpause", ps)
 
 	c := newcontroller()
 
