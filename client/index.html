@@ -4,29 +4,35 @@
     <title>Drag and Drop File Upload</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
-    <link rel="stylesheet" href="./button_glass.css">
-    <link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" href="./tv.css">
-
+    <link rel="stylesheet" href="./style/style.css">
+    <link rel="stylesheet" href="./style/dropzone.css">
+    <link rel="stylesheet" href="./style/tv.css">
+    <link rel="stylesheet" href="./style/background.css">
 </head>
 
 <body>
     <div class="container">
-
-        <div class="playpause">
+        
+        <!-- <div class="playpause">
             <div class="play">play</div>
             <div class="pause">pause</div>
-        </div>
+        </div> -->
 
-        <div class="TV-container">
-            <div id="0" class="TV left floating test"> 0 </div>
-            <div id="1" class="TV center floating"> 1 </div>
-            <div id="2" class="TV center floating"> 2 </div>
-            <div id="3" class="TV center floating"> 3 </div>
-            <div id="4" class="TV center floating"> 4 </div>
-            <div id="5" class="TV right floating"> 5 </div>
-        </div>
+        <div class="scene">
 
+            <div class="floor"></div>
+            <div class="pillar"></div>
+            <div class="desk"></div>
+            <div class="TV-container">
+                <div id="tv0" class="TV left floating test">  </div>
+                <div id="tv1" class="TV center floating">  </div>
+                <div id="tv2" class="TV center floating">  </div>
+                <div id="tv3" class="TV center floating">  </div>
+                <div id="tv4" class="TV center floating">  </div>
+                <div id="tv5" class="TV right floating">  </div>
+            </div>
+        </div>
+        
         <div class="drop-zone" id="drop-zone">
             <div class="drop-zone-deco">
                 <span class="drop-zone-prompt" id="drop-zone-prompt">Drop file here or click to upload</span>
@@ -38,8 +44,8 @@
         </form>
 
     </div>
-    <script src="./tv_buttons.js"></script>
-    <script src="./tv.js"></script>
-    <script type="text/javascript" src="dropzone.js"></script>
-    <script src="files.js"></script>
+    <script src="./src/tv_buttons.js"></script>
+    <script src="./src/tv.js"></script>
+    <script type="text/javascript" src="./src/dropzone.js"></script>
+    <script src="./src/files.js"></script>
 </body>

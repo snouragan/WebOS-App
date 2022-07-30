@@ -1,0 +1,162 @@
+$moonlitasteroid: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+$midnightcity: linear-gradient(to right, #232526, #414330);
+$purplepine: linear-gradient(to right, #20002c, #cbb4d4);
+$mystic: linear-gradient(to right, #757f9a, #d7dde8);
+$titanium: linear-gradient(to right, #283048, #859398);
+$lithium: linear-gradient(to bottom right, #6d6027, #d3cbb8);
+$custom: linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(134,134,134,1) 25%, rgba(0,0,0,1) 50%, rgba(134,134,134,1) 75%, rgba(0,0,0,1) 100%);
+$custom2: linear-gradient(315deg, rgba(0,0,0,1) 0%, rgba(70,70,70,1) 20%, rgba(0,0,0,1) 40%, rgba(70,70,70,1) 50%, rgba(70,70,70,1) 60%, rgba(37,37,37,1) 80%, rgba(0,0,0,1) 100%);
+$shadowcolor: rgba(0, 0, 0, 0.7);
+$insetshadowcolor: rgba(199, 199, 199, 0.5);
+$shadowsize: 2px;
+$shadowblur: 0px;
+$shadowspread: 1px;
+
+.floor {
+    // visibility: hidden;
+    position: absolute;
+    left: 0%;
+    bottom: 0%;
+    width: 100%;
+    height: 35%;
+    background: $lithium;
+    box-shadow: 0px 0px 3px 5px $shadowcolor;
+    overflow: hidden;
+}
+
+// .desk {
+//     position: absolute;
+//     width: 0px;
+//     height: 0px;
+//     border-top: 200px solid red;
+//     border-left: 200px solid transparent;
+// }
+
+.pillar {
+    position: absolute;
+    left: calc(50% - 87.5px);
+    bottom: 10%;
+    width: 175px;
+    height: 700px;
+    border-radius: 50px/25px;
+    background: $titanium;
+}
+
+.pillar::after {
+    position: absolute;
+    width: 175px;
+    height: 50px;
+    border-radius: 50px/25px;
+    background: $titanium;
+    content: '';
+}
+
+.pillar::before {
+    position: absolute;
+    top: 650px;
+    width: 175px;
+    height: 50px;
+    border-radius: 50px/25px;
+    background: $titanium;
+    box-shadow: 0px 0px 3px 10px $shadowcolor;
+    z-index: -1;
+    content: '';
+}
+
+.TV-container {
+    position: relative;
+    top: -25%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 3px;
+}
+
+.TV {
+    padding: 10px;
+    position: relative;
+    width: 160px;
+    height: 280px;
+    overflow: hidden;
+    background: $custom2;
+    border-radius: 15px;
+    box-shadow:
+        0px 0px 4px 5px $insetshadowcolor inset;
+    z-index: 0;
+}
+
+.TV::before {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    top: 50%;
+    left: 5%;
+    border-radius: 20%;
+    box-shadow: 0px 0px 1px 0.25px #cbb4d4 inset;
+    background: rgba(255, 1, 1, 0.63);
+    content: '';
+}
+
+// #tv0, #tv5 {
+//     top: 100px;
+// }
+
+#tv0 {
+    transform: rotateY(30deg);
+    -moz-transform: rotateY(30deg);
+    box-shadow: -$shadowsize $shadowsize $shadowblur $shadowspread $shadowcolor,
+    0px 0px 4px 5px $insetshadowcolor inset; 
+    visibility: hidden;
+}
+
+#tv5 {
+    transform: rotateY(-30deg);
+    -moz-transform: rotateY(-30deg);
+    box-shadow: $shadowsize $shadowsize $shadowblur $shadowspread $shadowcolor,
+    0px 0px 4px 5px $insetshadowcolor inset; 
+    visibility: hidden;
+
+}
+
+// #tv1, #tv4 {
+//     top: 50px;
+// }
+
+#tv1 {
+    transform: rotateY(15deg);
+    -moz-transform: rotateY(15deg);
+    box-shadow: -$shadowsize $shadowsize $shadowblur $shadowspread $shadowcolor,
+    0px 0px 4px 5px $insetshadowcolor inset; 
+    visibility: hidden;
+
+}
+
+#tv4 {
+    transform: rotateY(-15deg);
+    -moz-transform: rotateY(-15deg);
+    box-shadow: $shadowsize $shadowsize $shadowblur $shadowspread $shadowcolor,
+    0px 0px 4px 5px $insetshadowcolor inset; 
+    visibility: hidden;
+
+}
+
+// #tv2, #tv3 {
+//     // top: 20px;
+//     transform: rotateX(90deg);
+//     -moz-transform: rotateX(45deg);
+// }
+
+#tv2 {
+    transform: rotateY(30deg) rotateX(5deg);
+    -moz-transform: rotateY(35deg) rotateX(10deg);
+    box-shadow: $shadowsize $shadowsize $shadowblur $shadowspread $shadowcolor,
+    0px 0px 4px 5px $insetshadowcolor inset;
+}
+
+#tv3 {
+    transform: rotateY(-30deg) rotateX(5deg);
+    -moz-transform: rotateY(-30deg) rotateX(10deg);
+    box-shadow: -$shadowsize -$shadowsize $shadowblur $shadowspread $shadowcolor,
+    0px 0px 4px 5px $insetshadowcolor inset;
+}
