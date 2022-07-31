@@ -5,9 +5,9 @@
                 tv.classList.remove('clicked');
             } else {
                 tv.classList.add('clicked');
+
                 document.querySelectorAll('.TV').forEach((t) => {
                     if (t.id !== tv.id) {
-                        
                         t.classList.remove('clicked');
                     }
                 })
