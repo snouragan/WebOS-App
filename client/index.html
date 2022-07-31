@@ -6,19 +6,68 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="./style/style.css">
     <link rel="stylesheet" href="./style/dropzone.css">
-    <link rel="stylesheet" href="./style/tv.css">
-    <link rel="stylesheet" href="./style/background.css">
+    <link rel="stylesheet" href="./style/visual.css">
+    <link rel="stylesheet" href="./style/style.css">
+
 </head>
 
 <body>
+    <div class="room card">
+        <div class="door rackdoor component"></div>
+        <div class="door backdoor component"></div>
+        <div class="couch component"></div>
+        <div class="walltable racktable component"></div>
+        <div class="walltable backtable component"></div>
+        <div class="rack component"></div>
+        <div class="tables">
+            <div class="couchtable component"></div>
+            <div class="couchtable component"></div>
+            <div class="couchtable component"></div>
+        </div>
+        <div class="setup component">
+            <div class="setuptv component mtv0"></div>
+            <div class="setuptv component mtv1"></div>
+            <div class="setuptv component mtv2"></div>
+            <div class="setuptv component mtv3"></div>
+            <div class="setuptv component mtv4"></div>
+            <div class="setuptv component mtv5"></div>
+        </div>
+        <div class="pillar rackpillar component"></div>
+        <div class="pillar backpillar component"></div>
+        <div class="desk component"></div>
+        
+    </div>
     <div class="container">
         
-        <!-- <div class="playpause">
-            <div class="play">play</div>
-            <div class="pause">pause</div>
-        </div> -->
+        <header>
+            <h1>Drag files anywhere to upload</h1>
+        </header> 
 
-        <div class="scene">
+        <div class="button-container">
+            <div class="play button card ">
+                <h3>Play</h3>
+            </div>
+            <div class="pause button card ">
+                <h3>Pause</h3>
+            </div>
+            <div class="select button card ">
+                <h3>Select</h3>
+            </div>
+            <div class="upload button card ">
+                <h3>Upload</h3>
+            </div>
+        </div>
+
+        <div class="TV-container">
+            <div id="tv0" class="TV card"> 1 </div>
+            <div id="tv1" class="TV card"> 2 </div>
+            <div id="tv2" class="TV card"> 3 </div>
+            <div id="tv3" class="TV card"> 4 </div>
+            <div id="tv4" class="TV card"> 5 </div>
+            <div id="tv5" class="TV card"> 6 </div>
+        </div>
+
+        <!-- <div class="scene">
 
             <div class="floor"></div>
             <div class="pillar"></div>
@@ -31,7 +80,7 @@
                 <div id="tv4" class="TV center floating">  </div>
                 <div id="tv5" class="TV right floating">  </div>
             </div>
-        </div>
+        </div> -->
         
         <div class="drop-zone" id="drop-zone">
             <div class="drop-zone-deco">
@@ -44,8 +93,11 @@
         </form>
 
     </div>
-    <script src="./src/tv_buttons.js"></script>
+    <script src="https://cdn.lr-in-prod.com/LogRocket.min.js" crossorigin="anonymous"></script>
+    <script>window.LogRocket && window.LogRocket.init('jb9zbt/monitors');</script>
     <script src="./src/tv.js"></script>
-    <script type="text/javascript" src="./src/dropzone.js"></script>
+    <script src="./src/dropzone.js"></script>
+    <script src="./src/buttons.js"></script>
     <script src="./src/files.js"></script>
+
 </body>
