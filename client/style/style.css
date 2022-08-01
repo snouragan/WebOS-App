@@ -54,21 +54,6 @@ header h1 {
     background-position: 200% center;
   }
 }
-.TV-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  gap: 10px;
-}
-
-.TV {
-  position: relative;
-  width: 200px;
-  height: 300px;
-  font-size: 40px;
-}
-
 .card {
   display: flex;
   align-items: center;
@@ -80,6 +65,73 @@ header h1 {
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
 }
 
+.TV-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.TV, .face {
+  position: relative;
+  width: 200px;
+  height: 300px;
+  font-size: 40px;
+  cursor: pointer;
+  transition: 1s;
+}
+
+.TV:hover {
+  transition: 1s;
+  transform: scale(1.1);
+  background-color: rgb(230, 0, 0);
+  color: white;
+  z-index: 1;
+}
+
+.face1:before,
+.face1:after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  background: linear-gradient(45deg, #fb0094, #0000ff, #00ff00, #ffff00, #ff0000, #fb0094, #0000ff, #00ff00, #ffff00, #ff0000);
+  background-size: 400%;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  z-index: 0;
+  -webkit-animation: animate 20s linear infinite;
+          animation: animate 20s linear infinite;
+}
+
+.face1:after {
+  filter: blur(20px);
+}
+
+@-webkit-keyframes animate {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 300% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+@keyframes animate {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 300% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
 .button-container {
   width: auto;
   height: auto;
