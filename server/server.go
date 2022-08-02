@@ -58,18 +58,6 @@ func cors(fs http.Handler) http.HandlerFunc {
 	}
 }
 
-func parseResourceURL(url string) (resource string, numtv int, sf string) {
-	s := strings.Split(url, "/")
-
-	s = s[len(s)-2:]
-
-	n, _ := strconv.Atoi(s[1])
-
-	// TODO: checks
-
-	return s[0], n, s[2]
-}
-
 func addAccessControlAllowOrigin() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if options.debug && len(r.URL.Path) > 2 {
@@ -103,6 +91,7 @@ func runServer() {
 	http.HandleFunc("/ctl/upload", upload)
 	http.HandleFunc("/ctl/list", list)
 	http.HandleFunc("/ctl/prepare/", prepare)
+	http.HandleFunc("/ctl/rm/", rm)
 
 	http.HandleFunc("/split/", split)
 
