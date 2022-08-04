@@ -1,8 +1,13 @@
-// Store video player element:
+// Store video player and image elements:
 const videoElement = document.getElementById("video");
+const imageElement = document.querySelector("img.fullscreen");
 
-// Object to store video file:
+// Object to store video file and image:
 let videoFile = undefined;
+let iamgeFile = undefined;
+
+// Flag for deciding between video and image:
+let displayVideo = true;
 
 // Flag for looping videos:
 let loop = true;
@@ -14,6 +19,9 @@ const videoContext = 'VIDEO';
  * Resume video playback.
  */
 function resumePlayback() {
+    if (!displayVideo) {
+        return;
+    }
     syncPlay();
 }
 
@@ -21,6 +29,9 @@ function resumePlayback() {
  * Pause video playback.
  */
 function pausePlayback() {
+    if (!displayVideo) {
+        return;
+    }
     videoElement.pause();
     syncCurrentPosition();
 }
@@ -31,6 +42,9 @@ function pausePlayback() {
  * @param {*} position - position to seek to.
  */
 function seekVideo(position) {
+    if (!displayVideo) {
+        return;
+    }
     videoElement.pause();
     videoElement.currentTime = position;
     syncPlay();
@@ -44,6 +58,8 @@ function loadVideo(src) {
     fetch('http://' + SERVER_IP + src, {
         method: 'GET'
     }).then(res => res.blob()).then(blob => {
+        displayVideo = true;
+        imageElement.classList.remove('visible');
         videoFile = blob;
         display(videoFile, videoElement);
         log(videoContext, 'Loaded video: ' + src, INFO);
@@ -54,10 +70,31 @@ function loadVideo(src) {
     });
 }
 
+function loadImage(src) {
+    stopPolling();
+    fetch('http://' + SERVER_IP + src, {
+        method: 'GET'
+    }).then(res => res.blob()).then(blob => {
+        displayVideo = false;
+        imageElement.classList.add('visible');
+        imageFile = blob;
+        let urlCreator = window.URL || window.webkitURL;
+        imageElement.src = urlCreator.createObjectURL(imageFile);
+        log(videoContext, 'Loaded image: ' + src, INFO);
+        startPolling();
+    }).catch(e => {
+        log(videoContext, 'Failed to fetch image. Reason: ' + e, ERROR);
+        startPolling();
+    });
+}
+
 /**
  * Synchronize player with other devices.
  */
 function syncPlay() {
+    if (!displayVideo) {
+        return;
+    }
     stopPolling();
     fetch('http://' + SERVER_IP + '/sync', {
         method: 'GET'
@@ -76,6 +113,9 @@ function syncPlay() {
  * Synchronize pause position with other devices.
  */
 function syncCurrentPosition() {
+    if (!displayVideo) {
+        return;
+    }
     stopPolling();
     fetch('http://' + SERVER_IP + '/sync', {
         method: 'POST',
@@ -122,7 +162,9 @@ videoElement.addEventListener('ended', () => {
 
 
 window.addEventListener('load', () => {
-    log(videoContext, 'Loaded video player', INFO); 
+    log(videoContext, 'Loaded video player', INFO);
     // Load default video:
-    loadVideo('/split/sample.6.stretch.webm');
+    // loadVideo('/split/sample.6.stretch.webm');
+
+    startPolling();
 });

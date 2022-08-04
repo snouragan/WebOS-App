@@ -28,7 +28,7 @@ div.bg {
 }
 
 p.visual-debug {
-    z-index: 3;
+    z-index: 5;
     position: absolute;
     margin: 0;
     padding: 20px;
@@ -42,7 +42,7 @@ p.visual-debug {
 
     opacity: 0.0;
     -webkit-opacity: 0.0;
-    
+
     transform: rotate(-90deg) translateY(500px);
     -webkit-transform: rotate(-90deg) translateY(500px);
 
@@ -88,4 +88,22 @@ video#video {
     bottom: 0;
     height: auto;
     width: auto;
+}
+
+img.fullscreen {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    width: auto;
+    height: auto;
+
+    display: none;
+}
+
+img.fullscreen.visible {
+    display: block;
+    z-index: 3;
 }

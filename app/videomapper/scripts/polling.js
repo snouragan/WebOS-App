@@ -62,6 +62,12 @@ function handleCommand(command) {
     }
 
     if (command.command === 'load' && command.src) {
+        let fileType = command.src.split('.')[command.src.split('.').length - 1].toLowerCase();
+
+        if(fileType === 'png' || fileType === 'jpg' || fileType === 'jpeg') {
+            return loadImage(command.src);
+        }
+
         return loadVideo(command.src)
     }
 
