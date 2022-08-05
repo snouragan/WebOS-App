@@ -11,3 +11,8 @@ document.querySelector('.pause').addEventListener('click', ()=> {
         method: 'GET',
     });
 });
+
+document.querySelector('.list').addEventListener('click', () => {
+    console.log('clicked list');
+    fetch('http://192.168.1.15:8069/ctl/pause').then(res => res.json)
+})

@@ -8,10 +8,14 @@
     <link rel="stylesheet" href="./style/dropzone.css">
     <link rel="stylesheet" href="./style/visual.css">
     <link rel="stylesheet" href="./style/style.css">
+    <link rel="stylesheet" href="./style/animation.css">
 
+    <script src="jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
+    <div class="sparkle"></div>
+
     <div class="room card">
         <div class="door rackdoor component"></div>
         <div class="door backdoor component"></div>
@@ -25,23 +29,23 @@
             <div class="couchtable component"></div>
         </div>
         <div class="setup component">
-            <div id = "mtv0" class="setuptv component"></div>
-            <div id = "mtv1" class="setuptv component"></div>
-            <div id = "mtv2" class="setuptv component"></div>
-            <div id = "mtv3" class="setuptv component"></div>
-            <div id = "mtv4" class="setuptv component"></div>
-            <div id = "mtv5" class="setuptv component"></div>
+            <div id="mtv0" class="setuptv component"></div>
+            <div id="mtv1" class="setuptv component"></div>
+            <div id="mtv2" class="setuptv component"></div>
+            <div id="mtv3" class="setuptv component"></div>
+            <div id="mtv4" class="setuptv component"></div>
+            <div id="mtv5" class="setuptv component"></div>
         </div>
         <div class="pillar rackpillar component"></div>
         <div class="pillar backpillar component"></div>
         <div class="desk component"></div>
-        
+
     </div>
     <div class="container">
-        
+
         <header>
             <h1>Drag files anywhere to upload</h1>
-        </header> 
+        </header>
 
         <div class="button-container">
             <div class="play button card ">
@@ -56,19 +60,13 @@
             <div class="upload button card ">
                 <h3>Upload</h3>
             </div>
+            <div class="list button card">
+                <h3>List</h3>
+            </div>
         </div>
 
         <div class="TV-container">
-            <div id="tv0" class="TV card"> 
-                <div class="face face1">
-                    <div class="content"></div>
-                </div>    
-                <div class="face face2">
-                    <div class="content">
-                        idle
-                    </div>
-                </div>
-            </div>
+            <div id="tv0" class="TV card"> 1 </div>
             <div id="tv1" class="TV card"> 2 </div>
             <div id="tv2" class="TV card"> 3 </div>
             <div id="tv3" class="TV card"> 4 </div>
@@ -90,7 +88,7 @@
                 <div id="tv5" class="TV right floating">  </div>
             </div>
         </div> -->
-        
+
         <div class="drop-zone" id="drop-zone">
             <div class="drop-zone-deco">
                 <span class="drop-zone-prompt" id="drop-zone-prompt">Drop file here or click to upload</span>
