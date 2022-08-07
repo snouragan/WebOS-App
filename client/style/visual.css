@@ -9,8 +9,11 @@
   font-size: larger;
 }
 
-.room::before {
+.room::after {
+  font-size: 50px;
   content: "MAP";
+  transform: rotateZ(45deg);
+  z-index: -1;
 }
 
 .component {

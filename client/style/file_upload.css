@@ -1,0 +1,77 @@
+.box, .largebox {
+  position: absolute;
+  width: 5em;
+  height: 5em;
+  cursor: pointer;
+  right: 5%;
+  bottom: 5%;
+  border-radius: 3%;
+  transition: all 1s;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.box .filelist {
+  visibility: hidden;
+}
+
+.box::before {
+  content: "Files";
+}
+
+.box:hover, .largebox {
+  width: 40em;
+  height: 40em;
+  background-color: white;
+  color: white;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.box:hover .filelist, .largebox .filelist {
+  visibility: visible;
+}
+
+.filelist {
+  width: 50%;
+  height: 80%;
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  background: transparent;
+  scrollbar-width: none;
+  overflow-y: scroll;
+}
+
+select {
+  z-index: 1;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border: 0;
+  outline: 0;
+  font: inherit;
+  width: 20em;
+  height: 3em;
+  padding: 0 4em 0 1em;
+  background: rgb(230, 0, 0);
+  color: white;
+  border-radius: 0.25em;
+  box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  /* Remove focus outline */
+  /* Remove IE arrow */
+}
+select option {
+  color: inherit;
+  background-color: #320a28;
+}
+select:focus {
+  outline: none;
+}
+select::-ms-expand {
+  display: none;
+}/*# sourceMappingURL=file_upload.css.map */

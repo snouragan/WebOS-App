@@ -77,6 +77,8 @@ header h1 {
     background: dark;
     border-radius: 3%;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+    z-index: 1;
+    // filter: invert(75%)
 }
 
 .TV-container {
@@ -96,19 +98,49 @@ header h1 {
     transition: 1s;
     top: 0;
     left: 0;
-}
-
-.TV {
     z-index: 1;
     opacity: 1;
+
+    &::before {
+        content: "";
+        background: #00ff00;
+        border-radius: 10%;
+
+        width: 3%;
+        height: 3%;
+
+        position: absolute;
+        left: 2%;
+
+        box-shadow: 0 0 5px 1px #00ff00;
+    }
 }
+
 
 .TV:hover {
     transition: 1s;
     transform: scale(0.97);
-    background-color: $vodafonered;
-    color: white;
+    background-color: black;
+    color: black;
     z-index: 1;
+    filter: invert(75%);
+    overflow: hidden;
+
+    &::before {
+        content: "thumbnail";
+        color: white;
+        
+        position: absolute;
+        top: 5%;
+    }
+
+    &::after {
+        content: "name";
+        color: white;
+
+        position: absolute;
+        bottom: 5%;
+    }
 }
 
 .button-container {
@@ -121,8 +153,47 @@ header h1 {
     gap: 10px;
 }
 
-.button {
-    font-size: 30px;
-    width: 100%;
-    height: 50%;
+.play {
+    color: grey;
+    content: "Play";
+}
+
+.tutorial, .electrum {
+    position: absolute;
+    width: 8em;
+    height: 4em;
+    cursor: pointer;
+
+    left: 2.5%;
+    top: 10%;
+
+    border-radius: 3%;
+    transition: all 1s;
+    user-select: none;
+
+    &::before {
+        content: "Tutorial";
+    }
+}
+
+.electrum {
+    top: 2.5%;
+
+    &::before {
+        content: "Electrum";
+    }
+}
+
+.playpause {
+    position: absolute;
+    width: 4em;
+    height: 4em;
+    cursor: pointer;
+
+    right: 7.5%;
+    top: 10%;
+
+    border-radius: 50%;
+    transition: all 1s;
+    user-select: none;
 }

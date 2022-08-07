@@ -1,1 +1,116 @@
-/*# sourceMappingURL=animation.css.map */
+.lines {
+  position: fixed;
+  top: -30%;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  transform: rotate(-90deg);
+  z-index: 0;
+}
+
+.line {
+  --line-length: 6em;
+  --line-height: 2px;
+  --fall-duration: 9s;
+  --fade-duration: var(--fall-duration);
+  z-index: 0;
+  position: absolute;
+  top: var(--top-offset);
+  left: 0;
+  width: var(--line-length);
+  height: var(--line-height);
+  color: #e60000;
+  background: linear-gradient(45deg, #e60000, transparent);
+  border-radius: 50%;
+  filter: drop-shadow(0 0 6px #e60000);
+  transform: translate3d(104em, 0, 0);
+  -webkit-animation: fall var(--fall-duration) var(--fall-delay) linear infinite, fade var(--fade-duration) var(--fall-delay) ease-out infinite;
+          animation: fall var(--fall-duration) var(--fall-delay) linear infinite, fade var(--fade-duration) var(--fall-delay) ease-out infinite;
+}
+@media screen and (max-width: 750px) {
+  .line {
+    -webkit-animation: fall var(--fall-duration) var(--fall-delay) linear infinite;
+            animation: fall var(--fall-duration) var(--fall-delay) linear infinite;
+  }
+}
+.line:nth-child(1) {
+  --line-length: 12.16em;
+  --top-offset: 99.98vh;
+  --fall-duration: 10.344s;
+  --fall-delay: 4.486s;
+}
+.line:nth-child(2) {
+  --line-length: 11.77em;
+  --top-offset: 47.95vh;
+  --fall-duration: 7.471s;
+  --fall-delay: 7.971s;
+}
+.line:nth-child(3) {
+  --line-length: 11.55em;
+  --top-offset: 72.76vh;
+  --fall-duration: 11.699s;
+  --fall-delay: 2.572s;
+}
+.line:nth-child(4) {
+  --line-length: 12.71em;
+  --top-offset: 21.23vh;
+  --fall-duration: 9.074s;
+  --fall-delay: 4.63s;
+}
+.line:nth-child(5) {
+  --line-length: 13.86em;
+  --top-offset: 12.51vh;
+  --fall-duration: 10.933s;
+  --fall-delay: 5.718s;
+}
+
+@-webkit-keyframes fall {
+  to {
+    transform: translate3d(-30em, 0, 0);
+  }
+}
+
+@keyframes fall {
+  to {
+    transform: translate3d(-30em, 0, 0);
+  }
+}
+@-webkit-keyframes fade {
+  0%, 50% {
+    width: var(--line-length);
+    opacity: 1;
+  }
+  70%, 80% {
+    width: 0;
+    opacity: 0.4;
+  }
+  100% {
+    width: 0;
+    opacity: 0;
+  }
+}
+@keyframes fade {
+  0%, 50% {
+    width: var(--line-length);
+    opacity: 1;
+  }
+  70%, 80% {
+    width: 0;
+    opacity: 0.4;
+  }
+  100% {
+    width: 0;
+    opacity: 0;
+  }
+}
+.logo, .logo-text {
+  position: absolute;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(16px 16px 20px #e60000);
+}
+
+.logo-text {
+  visibility: visible;
+}/*# sourceMappingURL=animation.css.map */
