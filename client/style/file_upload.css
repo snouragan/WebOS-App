@@ -44,6 +44,8 @@
   background: transparent;
   scrollbar-width: none;
   overflow-y: scroll;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 select {
