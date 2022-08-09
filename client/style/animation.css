@@ -34,34 +34,64 @@
   }
 }
 .line:nth-child(1) {
-  --line-length: 13.18em;
-  --top-offset: 88.77vh;
-  --fall-duration: 6.244s;
-  --fall-delay: 7.322s;
+  --line-length: 12em;
+  --top-offset: 40.81vh;
+  --fall-duration: 7.814s;
+  --fall-delay: 3.917s;
 }
 .line:nth-child(2) {
-  --line-length: 10.85em;
-  --top-offset: 62.08vh;
-  --fall-duration: 9.743s;
-  --fall-delay: 4.829s;
+  --line-length: 10.79em;
+  --top-offset: 160.84vh;
+  --fall-duration: 10.881s;
+  --fall-delay: 3.596s;
 }
 .line:nth-child(3) {
-  --line-length: 11.62em;
-  --top-offset: 20.83vh;
-  --fall-duration: 11.232s;
-  --fall-delay: 5.319s;
+  --line-length: 13.44em;
+  --top-offset: 44.33vh;
+  --fall-duration: 7.196s;
+  --fall-delay: 8.477s;
 }
 .line:nth-child(4) {
-  --line-length: 14.27em;
-  --top-offset: 89.73vh;
-  --fall-duration: 10.837s;
-  --fall-delay: 6.199s;
+  --line-length: 11.29em;
+  --top-offset: 100.12vh;
+  --fall-duration: 9.253s;
+  --fall-delay: 3.173s;
 }
 .line:nth-child(5) {
-  --line-length: 14.63em;
-  --top-offset: 69.37vh;
-  --fall-duration: 11.06s;
-  --fall-delay: 7.107s;
+  --line-length: 11.74em;
+  --top-offset: 162.61vh;
+  --fall-duration: 11.713s;
+  --fall-delay: 2.377s;
+}
+.line:nth-child(6) {
+  --line-length: 12.33em;
+  --top-offset: 182.52vh;
+  --fall-duration: 7.421s;
+  --fall-delay: 4.885s;
+}
+.line:nth-child(7) {
+  --line-length: 12.87em;
+  --top-offset: 64.53vh;
+  --fall-duration: 8.503s;
+  --fall-delay: 9.538s;
+}
+.line:nth-child(8) {
+  --line-length: 11.9em;
+  --top-offset: 51.39vh;
+  --fall-duration: 8.064s;
+  --fall-delay: 1.652s;
+}
+.line:nth-child(9) {
+  --line-length: 11.98em;
+  --top-offset: 156.54vh;
+  --fall-duration: 9.092s;
+  --fall-delay: 5.39s;
+}
+.line:nth-child(10) {
+  --line-length: 14.1em;
+  --top-offset: 153.42vh;
+  --fall-duration: 6.099s;
+  --fall-delay: 1.803s;
 }
 
 @-webkit-keyframes fall {

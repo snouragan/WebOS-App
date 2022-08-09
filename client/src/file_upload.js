@@ -1,34 +1,38 @@
-var box = document.getElementById("box");
-var list = '';
+let box = document.getElementById("box");
+let list = {};
 
 box.addEventListener('click', () => {
     console.log('clicked box');
-    if(box.classList.contains('box')) {
+    if (box.classList.contains('box')) {
         box.classList.add('largebox');
         box.classList.remove('box');
     }
 
-    else if(box.classList.contains('largebox')) {
+    else if (box.classList.contains('largebox')) {
         box.classList.add('box');
         box.classList.remove('largebox');
     }
 
 });
 
-async function getList() {
+(function getList() {
     const filelist = document.querySelector('.filelist');
 
-    list = await fetch('http://192.168.1.15:8069/ctl/list').json();
-    list.foreach(file => {
-        Object.entries(file).forEach(([key, value]) => {
-            console.log('${key} ${value}');
-            
+    fetch('http://192.168.1.15:8069/ctl/list')
+        .then(res => res.json())
+        .then(data => {
+            list = data;
+            list.foreach(file => {
+                Object.entries(file).forEach(([key, value]) => {
+                    console.log('${key} ${value}');
+
+                });
+                console.log('got json');
+            });
         });
-        console.log('got json');
-    });
 
     setTimeout(getList, 5000);
-}
+})();
 
 // {
 //     "resources": {

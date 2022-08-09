@@ -26,7 +26,7 @@ $dark: rgb(51, 51, 51);
   }
   
   .line {
-    $line-count: 5;
+    $line-count: 10;
     --line-length: 6em;
     --line-height: 2px;
     --fall-duration: 9s;
@@ -53,7 +53,7 @@ $dark: rgb(51, 51, 51);
     @for $i from 1 through $line-count {
       &:nth-child(#{$i}) {
         --line-length: #{random_range(1000em, 1500em) / 100};
-        --top-offset: #{random_range(0vh, 10000vh) / 100};
+        --top-offset: #{random_range(0vh, 20000vh) / 100};
         --fall-duration: #{random_range(6000, 12000s) / 1000};
         --fall-delay: #{random_range(0, 10000s) / 1000};
       }
