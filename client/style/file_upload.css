@@ -6,7 +6,7 @@
   right: 5%;
   bottom: 5%;
   border-radius: 3%;
-  transition: all 1s;
+  transition: all 0.5s;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
@@ -46,6 +46,9 @@
   overflow-y: scroll;
   display: flex;
   flex-wrap: wrap;
+}
+.filelist::-webkit-scrollbar {
+  display: none;
 }
 
 select {
