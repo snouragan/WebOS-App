@@ -1,4 +1,5 @@
-.box, .largebox {
+.box,
+.largebox {
   position: absolute;
   width: 5em;
   height: 5em;
@@ -6,7 +7,7 @@
   right: 5%;
   bottom: 5%;
   border-radius: 3%;
-  transition: all 0.5s;
+  transition: all 1s;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
@@ -16,67 +17,80 @@
 .box .filelist {
   visibility: hidden;
 }
-
-.box::before {
-  content: "Files";
+.box .addfile {
+  visibility: hidden;
 }
-
-.box:hover, .largebox {
-  width: 40em;
-  height: 40em;
-  background-color: white;
-  color: white;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-}
-.box:hover .filelist, .largebox .filelist {
-  visibility: visible;
-}
-
-.filelist {
-  width: 50%;
-  height: 80%;
+.box:before {
   position: absolute;
-  top: 5%;
-  left: 5%;
-  background: transparent;
-  scrollbar-width: none;
-  overflow-y: scroll;
-  display: flex;
-  flex-wrap: wrap;
-}
-.filelist::-webkit-scrollbar {
-  display: none;
+  content: "files";
 }
 
-select {
-  z-index: 1;
+.largebox {
+  width: 40vw;
+  height: 80vh;
+  background-color: rgb(51, 51, 51);
+}
+.largebox .addfile {
+  width: 40%;
+  height: 90%;
+  background: transparent;
+  border: 1px dotted;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10%;
+  overflow: none;
+}
+.largebox .addfile .files {
+  width: 80%;
+}
+.largebox .addfile select {
+  width: 90%;
+  height: 10%;
+  /* Reset */
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
   border: 0;
   outline: 0;
   font: inherit;
-  width: 20em;
-  height: 3em;
   padding: 0 4em 0 1em;
-  background: rgb(230, 0, 0);
+  background: url(https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg) no-repeat right 0.8em center/1.4em, linear-gradient(to left, rgba(255, 255, 255, 0.3) 3em, rgba(255, 255, 255, 0.2) 3em);
   color: white;
   border-radius: 0.25em;
   box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  /* Remove focus outline */
-  /* Remove IE arrow */
 }
-select option {
+.largebox .addfile select option {
   color: inherit;
-  background-color: #320a28;
+  background-color: transparent;
 }
-select:focus {
+.largebox .addfile select:focus {
   outline: none;
 }
-select::-ms-expand {
+.largebox .addfile select::-ms-expand {
   display: none;
+}
+.largebox .filelist {
+  width: 40%;
+  height: 90%;
+  background: transparent;
+  border: 1px dotted;
+  scrollbar-width: none;
+  overflow: hidden;
+  overflow-y: scroll;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 5%;
+}
+.largebox .filelist::-webkit-scrollbar {
+  display: none;
+}
+.largebox .filelist .thumbnail {
+  width: 40%;
+  height: 30%;
+  background: black;
 }/*# sourceMappingURL=file_upload.css.map */

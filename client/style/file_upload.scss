@@ -1,7 +1,8 @@
 $vodafonered: rgba(230, 0, 0, 1);
-$option: #320a28;
+$dark: rgb(51, 51, 51);
 
-.box, .largebox{
+.box,
+.largebox {
     position: absolute;
     width: 5em;
     height: 5em;
@@ -11,7 +12,7 @@ $option: #320a28;
     bottom: 5%;
 
     border-radius: 3%;
-    transition: all 0.5s;
+    transition: all 1s;
     user-select: none;
 }
 
@@ -19,79 +20,111 @@ $option: #320a28;
     & .filelist {
         visibility: hidden;
     }
+
+    & .addfile {
+        visibility: hidden;
+    }
+
+    &:before {
+        position: absolute;
+        content: 'files';
+    }
 }
 
-.box::before {
-    content: "Files";
+.largebox {
 
-}
+    width: 40vw;
+    height: 80vh;
 
-.box:hover, .largebox {
-    width: 40em;
-    height: 40em;
-    
-    background-color: white;
-    color: white;
-    
+    background-color: $dark;
+
+    & .addfile {
+        width: 40%;
+        height: 90%;
+
+        background: transparent;
+        border: 1px dotted;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 10%;
+
+        overflow: none;
+        // visibility: hidden;
+
+        & .files {
+            width: 80%;
+        }
+
+        & select {
+            $glass: rgba(255, 255, 255, 0.2);
+            $glass-icon: rgba(255, 255, 255, 0.3);
+
+            width: 90%;
+            height: 10%;
+
+            /* Reset */
+            appearance: none;
+            border: 0;
+            outline: 0;
+            font: inherit;
+
+            padding: 0 4em 0 1em;
+            background: url(https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg) no-repeat right 0.8em center / 1.4em,
+                linear-gradient(to left, $glass-icon 3em, $glass 3em);
+            color: white;
+            border-radius: 0.25em;
+            box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
+
+            cursor: pointer;
+            // visibility: hidden;
+
+            option {
+                color: inherit;
+                background-color: transparent;
+            }
+
+            &:focus {
+                outline: none;
+            }
+
+            &::-ms-expand {
+                display: none;
+            }
+        }
+    }
+
     & .filelist {
-        visibility: visible;
+        width: 40%;
+        height: 90%;
+
+        background: transparent;
+        border: 1px dotted;
+        
+        // visibility: hidden;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        scrollbar-width: none;
+        overflow: hidden;
+        overflow-y: scroll;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 5%;
+
+        & .thumbnail {
+            width: 40%;
+            height: 30%;
+
+            background: black;
+        }
     }
-    user-select: none;
+
 }
-
-
-
-.filelist {
-    width: 50%;
-    height: 80%;
-
-    position: absolute;
-    top: 5%;
-    left: 5%;
-
-    background: transparent;
-    
-    &::-webkit-scrollbar {
-        display: none;
-    }
-    scrollbar-width: none;
-    overflow-y: scroll;
-
-    display: flex;
-    flex-wrap: wrap;
-}
-
-select {
-    z-index: 1;
-    appearance: none;
-    border: 0;
-    outline: 0;
-    font: inherit;
-
-    width: 20em;
-    height: 3em;
-    padding: 0 4em 0 1em;
-
-    background: $vodafonered;
-
-    
-    color: white;
-    border-radius: 0.25em;
-    box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-
-    option {
-        color: inherit;
-        background-color: $option;
-    }
-
-    /* Remove focus outline */
-    &:focus {
-        outline: none;
-    }
-    /* Remove IE arrow */
-    &::-ms-expand {
-        display: none;
-    }
-}
-

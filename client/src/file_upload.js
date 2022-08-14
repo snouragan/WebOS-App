@@ -34,6 +34,10 @@ box.addEventListener('click', () => {
     setTimeout(getList, 5000);
 })();
 
+box.addEventListener('transitionend', () => {
+    
+});
+
 // {
 //     "resources": {
 //       "38ea1517085ce4233b8251d343b70e5d1ba1d568746bcb86dbc8551dcff4ac5d.webm": {
