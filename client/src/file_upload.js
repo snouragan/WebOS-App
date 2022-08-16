@@ -47,9 +47,9 @@ document.getElementById('file-input').addEventListener('change', () => {
 
     file = document.getElementById('file-input').files[0];
 
-    if(formData != null)
+    if (formData != null)
         formData.delete('file');
-        
+
     formData.append('file', file);
 
     console.log(file);
@@ -84,13 +84,13 @@ document.getElementById('file-input').addEventListener('change', () => {
 
     }
 
-    if(titleF == 0) {
+    if (titleF == 0) {
         document.querySelector('.addfile').appendChild(title);
 
         titleF = 1;
     }
-    
-    if(uploadF == 0) {
+
+    if (uploadF == 0) {
         document.querySelector('.addfile').appendChild(upload);
 
         uploadF = 1;
@@ -128,11 +128,11 @@ document.querySelector('.addfile').addEventListener('click', (event) => {
         console.log(type);
         console.log(title);
 
-        fetch('http://192.168.1.109:8069/ctl/upload', 
-        {
-            method: 'POST',
-            body: formData
-        });
+        fetch('http://192.168.1.109:8069/ctl/upload',
+            {
+                method: 'POST',
+                body: formData
+            });
         event.stopPropagation();
     }
 });
@@ -155,16 +155,31 @@ document.querySelector('.addfile').addEventListener('change', (event) => {
     fetch('http://192.168.1.109:8069/ctl/list')
         .then(res => res.json())
         .then(data => {
-            
-            // for(let key in data) {
-
-            // }
-
             console.log(data);
+            for (let key in data.resources) {
+                let obj = data.resources[key];
+                console.log(obj.thumbnail);
+                addThumbnail(obj.thumbnail);
+            }
         });
 
     setTimeout(getList, 5000);
 })();
+
+function addThumbnail(link) {
+    fetch("http://192.168.1.109:8069".concat(link))
+        .then(res => res.blob())
+        .then(imageBlob => {
+            const imageObjectURL = URL.createObjectURL(imageBlob);
+
+            let thumbnail = document.createElement('div');
+            thumbnail.classList.add('thumbnail');
+            thumbnail.style.backgroundImage = 'url(${imageObjectURL})';
+            console.log(imageObjectURL)
+
+            document.querySelector('.filelist').appendChild(thumbnail);
+        });
+};
 
 // {
 //     "resources": {
