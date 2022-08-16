@@ -40,6 +40,7 @@
   justify-content: center;
   flex-direction: column;
   gap: 10%;
+  cursor: unset;
   overflow: none;
 }
 .largebox .addfile .files {
@@ -71,6 +72,12 @@
 }
 .largebox .addfile select::-ms-expand {
   display: none;
+}
+.largebox .addfile .upload {
+  width: 50%;
+  height: 20%;
+  background: white;
+  cursor: pointer;
 }
 .largebox .filelist {
   width: 40%;

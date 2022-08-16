@@ -51,6 +51,7 @@ $dark: rgb(51, 51, 51);
         flex-direction: column;
         gap: 10%;
 
+        cursor: unset;
         overflow: none;
         // visibility: hidden;
 
@@ -94,6 +95,13 @@ $dark: rgb(51, 51, 51);
                 display: none;
             }
         }
+
+        & .upload {
+            width: 50%;
+            height: 20%;
+            background: white;
+            cursor: pointer;
+        }
     }
 
     & .filelist {
@@ -102,7 +110,7 @@ $dark: rgb(51, 51, 51);
 
         background: transparent;
         border: 1px dotted;
-        
+
         // visibility: hidden;
 
         &::-webkit-scrollbar {
