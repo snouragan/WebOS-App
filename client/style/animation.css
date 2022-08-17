@@ -34,64 +34,64 @@
   }
 }
 .line:nth-child(1) {
-  --line-length: 11.21em;
-  --top-offset: 176.32vh;
-  --fall-duration: 7.73s;
-  --fall-delay: 9.928s;
+  --line-length: 13.35em;
+  --top-offset: 28.7vh;
+  --fall-duration: 9.234s;
+  --fall-delay: 0.576s;
 }
 .line:nth-child(2) {
-  --line-length: 12.5em;
-  --top-offset: 45.66vh;
-  --fall-duration: 7.24s;
-  --fall-delay: 5.833s;
+  --line-length: 13.64em;
+  --top-offset: 145.44vh;
+  --fall-duration: 6.197s;
+  --fall-delay: 8.616s;
 }
 .line:nth-child(3) {
-  --line-length: 13.69em;
-  --top-offset: 143.78vh;
-  --fall-duration: 6.662s;
-  --fall-delay: 1.147s;
+  --line-length: 13.95em;
+  --top-offset: 92.03vh;
+  --fall-duration: 7.792s;
+  --fall-delay: 1.603s;
 }
 .line:nth-child(4) {
-  --line-length: 13.69em;
-  --top-offset: 6.8vh;
-  --fall-duration: 9.302s;
-  --fall-delay: 7.811s;
+  --line-length: 11.21em;
+  --top-offset: 182.46vh;
+  --fall-duration: 11.2s;
+  --fall-delay: 3.765s;
 }
 .line:nth-child(5) {
-  --line-length: 11.53em;
-  --top-offset: 127.33vh;
-  --fall-duration: 11.012s;
-  --fall-delay: 0.149s;
+  --line-length: 13.34em;
+  --top-offset: 181.75vh;
+  --fall-duration: 8.016s;
+  --fall-delay: 6.282s;
 }
 .line:nth-child(6) {
-  --line-length: 10.28em;
-  --top-offset: 10.46vh;
-  --fall-duration: 6.304s;
-  --fall-delay: 8.501s;
+  --line-length: 13.01em;
+  --top-offset: 30.99vh;
+  --fall-duration: 7.251s;
+  --fall-delay: 3.633s;
 }
 .line:nth-child(7) {
-  --line-length: 12.59em;
-  --top-offset: 8.64vh;
-  --fall-duration: 8.007s;
-  --fall-delay: 7.053s;
+  --line-length: 14.82em;
+  --top-offset: 67.27vh;
+  --fall-duration: 8.467s;
+  --fall-delay: 8.823s;
 }
 .line:nth-child(8) {
-  --line-length: 11.46em;
-  --top-offset: 184.8vh;
-  --fall-duration: 6.671s;
-  --fall-delay: 4.325s;
+  --line-length: 10.45em;
+  --top-offset: 47.84vh;
+  --fall-duration: 10.767s;
+  --fall-delay: 0.595s;
 }
 .line:nth-child(9) {
-  --line-length: 12.11em;
-  --top-offset: 109.06vh;
-  --fall-duration: 11.529s;
-  --fall-delay: 1.994s;
+  --line-length: 10.47em;
+  --top-offset: 12.24vh;
+  --fall-duration: 10.403s;
+  --fall-delay: 1.016s;
 }
 .line:nth-child(10) {
-  --line-length: 13.2em;
-  --top-offset: 108.29vh;
-  --fall-duration: 9.696s;
-  --fall-delay: 9.024s;
+  --line-length: 14.84em;
+  --top-offset: 80.93vh;
+  --fall-duration: 10.245s;
+  --fall-delay: 3.177s;
 }
 
 @-webkit-keyframes fall {

@@ -149,17 +149,21 @@ document.querySelector('.addfile').addEventListener('change', (event) => {
     }
 });
 
+let thumbnailKeys = [];
+
 (function getList() {
     const filelist = document.querySelector('.filelist');
 
     fetch('http://192.168.1.109:8069/ctl/list')
         .then(res => res.json())
         .then(data => {
-            console.log(data);
             for (let key in data.resources) {
                 let obj = data.resources[key];
-                console.log(obj.thumbnail);
-                addThumbnail(obj.thumbnail);
+
+                if (!thumbnailKeys.includes(key)) {
+                    thumbnailKeys.push(key);
+                    addThumbnail(obj.thumbnail);
+                }
             }
         });
 
@@ -167,18 +171,18 @@ document.querySelector('.addfile').addEventListener('change', (event) => {
 })();
 
 function addThumbnail(link) {
-    fetch("http://192.168.1.109:8069".concat(link))
-        .then(res => res.blob())
-        .then(imageBlob => {
-            const imageObjectURL = URL.createObjectURL(imageBlob);
+    let thumbnailURL = "http://192.168.1.109:8069".concat(link);
 
-            let thumbnail = document.createElement('div');
-            thumbnail.classList.add('thumbnail');
-            thumbnail.style.backgroundImage = 'url(${imageObjectURL})';
-            console.log(imageObjectURL)
+    let thumbnail = document.createElement('div');
+    thumbnail.classList.add('thumbnail');
+    thumbnail.classList.add('thumbnail');
+    console.log("url('" + thumbnailURL + "')");
+    thumbnail.style.backgroundImage = "url('" + thumbnailURL + "')";
+    // // thumbnail.style.backgroundImage = 'url(/home/snou/Pictures/rat-car-9553952.png)';
+    // thumbnail.style.backgroundImage = 'url(/assets/example.png)';
+    console.log(thumbnailURL);
 
-            document.querySelector('.filelist').appendChild(thumbnail);
-        });
+    document.querySelector('.filelist').appendChild(thumbnail);
 };
 
 // {

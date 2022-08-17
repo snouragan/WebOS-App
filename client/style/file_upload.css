@@ -99,5 +99,7 @@
 .largebox .filelist .thumbnail {
   width: 40%;
   height: 30%;
-  background: white;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 }/*# sourceMappingURL=file_upload.css.map */
