@@ -10,7 +10,6 @@ import (
 	"path/filepath"
 
 	"github.com/docker/go-units"
-	"github.com/h2non/filetype"
 )
 
 //go:embed split.sh thumbnail.sh resourcedb.empty.json
@@ -60,9 +59,9 @@ func createDirIfNotExist() {
 	createdir("raw")
 	createdir("processed")
 
-	ffmpegScript, _ := embedFS.ReadFile("ffmpeg_script.sh")
+	ffmpegScript, _ := embedFS.ReadFile("split.sh")
 
-	err = ioutil.WriteFile(filepath.Join(options.dir, "ffmpeg_script.sh"), ffmpegScript, 0755)
+	err = ioutil.WriteFile(filepath.Join(options.dir, "split.sh"), ffmpegScript, 0755)
 
 	if err != nil {
 		panic(fmt.Errorf("trying to create working directory: %w", err))
@@ -113,10 +112,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	a, b := filetype.MatchFile("/home/grffn/repos/WebOS-App/server/dir/data/38ea1517085ce4233b8251d343b70e5d1ba1d568746bcb86dbc8551dcff4ac5d.webm.thumb.jpg")
-	fmt.Printf("%#v %#v\n", a, b)
-
 	initResourcedb()
+	initIDGenerator()
 
 	runServer()
 }

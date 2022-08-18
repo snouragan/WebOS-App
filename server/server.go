@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"path"
 	"strconv"
@@ -61,8 +62,10 @@ func cors(fs http.Handler) http.HandlerFunc {
 func addAccessControlAllowOrigin() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if options.debug && len(r.URL.Path) > 2 {
-			if n, err := strconv.Atoi(r.URL.Path[1:2]); err != nil && n >= 1 && n <= spsz {
+			if n, err := strconv.Atoi(r.URL.Path[1:2]); err == nil && n >= 1 && n <= spsz {
+				fmt.Println("here")
 				r.RemoteAddr = idtv(n - 1)
+				r.URL.Path = r.URL.Path[2:]
 			}
 		}
 
@@ -75,22 +78,12 @@ func addAccessControlAllowOrigin() http.HandlerFunc {
 func runServer() {
 	runState.tvs = 0b11111
 
-	s := newsyncplay()
-
-	http.Handle("/sync", s)
-
-	ps := newsyncplay()
-
-	http.Handle("/syncpause", ps)
-
-	c := newcontroller()
-
-	http.Handle("/poll", c)
-	http.Handle("/ctl/", c)
+	http.HandleFunc("/sync", tvArrayServeSync)
+	http.HandleFunc("/poll", tvArrayServePoll)
+	http.HandleFunc("/ctl/", tvArrayServeCtl)
 
 	http.HandleFunc("/ctl/upload", upload)
 	http.HandleFunc("/ctl/list", list)
-	http.HandleFunc("/ctl/prepare/", prepare)
 	http.HandleFunc("/ctl/rm/", rm)
 
 	http.HandleFunc("/split/", split)

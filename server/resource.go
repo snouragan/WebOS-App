@@ -20,13 +20,19 @@ import (
 	"time"
 	"unicode"
 
+	"github.com/h2non/filetype"
 	"go.uber.org/zap"
+)
+
+const (
+	resourceTypeVideo = iota
+	resourceTypeImage
 )
 
 type resource struct {
 	Title string `json:"title"`
+	Type  int    `json:"type"`
 
-	InProgress  bool   `json:"inprogress"`
 	Prepared    bool   `json:"prepared"`
 	NumMonitors int    `json:"nmonitors,omitempty"`
 	SF          string `json:"sf,omitempty"`
@@ -55,10 +61,6 @@ func initResourcedb() {
 		resourcedb.Resources = make(map[string]*resource)
 	}
 
-	for _, v := range resourcedb.Resources {
-		v.InProgress = false
-	}
-
 	resourcedb.RWMutex = &sync.RWMutex{}
 
 	go updateDB()
@@ -79,8 +81,6 @@ func updateDB() {
 }
 
 func validTitle(title string) bool {
-	return true
-
 	if title == "" {
 		return false
 	}
@@ -94,12 +94,22 @@ func validTitle(title string) bool {
 	return true
 }
 
+func newResource(r *http.Request, fname string, res *resource) {
+	log.Info("New Resource", zap.String("From", fmtip(r.RemoteAddr)), zap.String("Resource", fname))
+
+	resourcedb.Lock()
+	resourcedb.Resources[fname] = res
+	resourcedb.Unlock()
+}
+
 var tmp uint64
 
 func upload(w http.ResponseWriter, r *http.Request) {
 	logrq(r, "upload")
 
-	log.Info("here1")
+	if !requireMethod(w, r, http.MethodPost) {
+		return
+	}
 
 	errResponse := func(err error, response string, statusCode int) {
 		log.Error("Upload error", zap.String("Err", err.Error()))
@@ -107,14 +117,6 @@ func upload(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("Content-Type", "text/plain")
 		w.WriteHeader(statusCode)
 		io.WriteString(w, response)
-	}
-
-	if r.Method != "POST" {
-		w.Header().Add("Content-Type", "text/plain")
-		w.WriteHeader(http.StatusBadRequest) // TODO: do method verification everywhere
-		io.WriteString(w, "POST only")
-
-		return
 	}
 
 	err := r.ParseMultipartForm(options.maxUploadSize)
@@ -142,8 +144,6 @@ func upload(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	defer formFile.Close()
-
 	ext := path.Ext(header.Filename)
 
 	tmpi := atomic.AddUint64(&tmp, 1)
@@ -152,7 +152,7 @@ func upload(w http.ResponseWriter, r *http.Request) {
 	f, err := os.Create(filepath.Join(options.dir, "raw", tmpFname))
 
 	if err != nil {
-		errResponse(err, "Internal server error", http.StatusInternalServerError)
+		errResponse(err, "Internal server error (see logs)", http.StatusInternalServerError)
 
 		return
 	}
@@ -162,121 +162,136 @@ func upload(w http.ResponseWriter, r *http.Request) {
 	write := io.MultiWriter(f, sha)
 
 	if _, err := io.Copy(write, formFile); err != nil {
-		errResponse(err, "Internal server error", http.StatusInternalServerError)
+		errResponse(err, "Internal server error (see logs)", http.StatusInternalServerError)
 
 		return
 	}
 
+	formFile.Close()
 	f.Close()
 
-	fname := hex.EncodeToString(sha.Sum(nil)) + ext
+	fname := hex.EncodeToString(sha.Sum(nil))[:7] + ext
+
+	resourcedb.RLock()
+	_, exists := resourcedb.Resources[fname]
+	resourcedb.RUnlock()
+
+	if exists {
+		os.Remove(filepath.Join(options.dir, "raw", tmpFname))
+		errResponse(fmt.Errorf("resource %s already exists", fname), "resource already exists", http.StatusConflict)
+
+		return
+	}
 
 	os.Rename(filepath.Join(options.dir, "raw", tmpFname), filepath.Join(options.dir, "raw", fname))
 
-	ffmpeg := exec.Command(filepath.Join(options.dir, "thumbnail.sh"), fname)
-	ffmpeg.Dir = options.dir
-
-	err = ffmpeg.Run()
+	t, err := filetype.MatchFile(filepath.Join(options.dir, "raw", fname))
 
 	if err != nil {
-		//TODO: Things
-		exitError := &exec.ExitError{}
+		os.Remove(filepath.Join(options.dir, "raw", fname))
+		errResponse(err, "Internal server error (see logs)", http.StatusInternalServerError)
 
-		if errors.As(err, &exitError) {
-			log.Error("Ffmpeg error", zap.Int("ExitCode", exitError.ExitCode()), zap.ByteString("Output", exitError.Stderr))
+		return
+	}
+
+	fmt.Print(t.MIME.Type)
+
+	switch t.MIME.Type {
+	default:
+		os.Remove(filepath.Join(options.dir, "raw", fname))
+
+		err := errors.New("bad mime type")
+		errResponse(err, err.Error(), http.StatusBadRequest)
+	case "image":
+		fmt.Println("\n\nere " + fname + "\n\n")
+		err := os.Rename(filepath.Join(options.dir, "raw", fname), filepath.Join(options.dir, "data", fname))
+
+		if err != nil {
+			panic(err)
+		}
+
+		newResource(r, fname, &resource{Title: title, Type: resourceTypeImage, Prepared: true, Thumbnail: "/data/" + fname})
+	case "video":
+		n, err := strconv.Atoi(r.FormValue("n"))
+
+		if err != nil || n < 1 || n > spsz {
+			os.Remove(filepath.Join(options.dir, "raw", fname))
+
+			err := errors.New("n must be a number between 1 and " + strconv.Itoa(spsz))
+			errResponse(err, err.Error(), http.StatusBadRequest)
 
 			return
 		}
 
-		fmt.Println(err.Error())
+		sf := r.FormValue("sf")
 
-		return
-	}
+		if sf != "stretch" && sf != "fit" {
+			os.Remove(filepath.Join(options.dir, "raw", fname))
 
-	resourcedb.Lock()
-	resourcedb.Resources[fname] = &resource{Title: title, Thumbnail: "/data/" + fname + ".thumb.jpg"}
-	resourcedb.Unlock()
-}
+			err := errors.New("sf must be stretch or fit")
+			errResponse(err, err.Error(), http.StatusBadRequest)
 
-func prepare(w http.ResponseWriter, r *http.Request) {
-	logrq(r, "prepare")
+			return
+		}
 
-	q := r.URL.Query()
+		ffmpeg := exec.Command(filepath.Join(options.dir, "thumbnail.sh"), fname)
+		ffmpeg.Dir = options.dir
 
-	resource := path.Base(r.URL.Path)
+		err = ffmpeg.Run()
 
-	n, err := strconv.Atoi(q.Get("n"))
+		if err != nil {
+			os.Remove(filepath.Join(options.dir, "raw", fname))
+			errResponse(err, "Internal server error (see logs)", http.StatusInternalServerError)
 
-	if err != nil || n < 1 || n > spsz {
-		w.Header().Add("Content-Type", "text/plain")
-		w.WriteHeader(http.StatusBadRequest)
+			exitError := &exec.ExitError{}
 
-		io.WriteString(w, "n must be a number between 1 and "+strconv.Itoa(spsz)+"\n")
+			if errors.As(err, &exitError) {
 
-		return
-	}
+				log.Error("Ffmpeg error", zap.Int("ExitCode", exitError.ExitCode()), zap.ByteString("Output", exitError.Stderr))
 
-	sf := q.Get("sf")
+				return
+			}
 
-	if sf != "stretch" && sf != "fit" {
-		w.Header().Add("Content-Type", "text/plain")
-		w.WriteHeader(http.StatusBadRequest)
+			return
+		}
 
-		io.WriteString(w, "sf must be stretch or fit\n")
+		newResource(r, fname, &resource{Title: title, Type: resourceTypeVideo, NumMonitors: n, SF: sf, Thumbnail: "/data/" + fname + ".thumb.jpg"})
 
-		return
-	}
+		go func() {
+			ffmpeg := exec.Command(filepath.Join(options.dir, "split.sh"), strconv.Itoa(n), sf, fname)
 
-	resourcedb.RLock()
-	if resourcedb.Resources[resource].InProgress {
-		w.WriteHeader(http.StatusConflict)
+			ffmpeg.Dir = options.dir
 
-		resourcedb.RUnlock()
-		return
-	}
-	resourcedb.RUnlock()
+			err := ffmpeg.Run()
 
-	resourcedb.Lock()
-	resourcedb.Resources[resource].InProgress = true
-	resourcedb.Unlock()
+			resourcedb.Lock()
+			defer resourcedb.Unlock()
 
-	ffmpeg := exec.Command(filepath.Join(options.dir, "split.sh"), strconv.Itoa(n), sf, resource)
+			exitError := &exec.ExitError{}
 
-	ffmpeg.Dir = options.dir
+			if errors.As(err, &exitError) {
+				log.Error("Ffmpeg error", zap.Int("ExitCode", exitError.ExitCode()), zap.ByteString("Output", exitError.Stderr))
 
-	go func() {
-		err := ffmpeg.Run()
+				return
+			} else if err != nil {
+				log.Error("Ffmpeg run error", zap.String("Err", err.Error()))
 
-		resourcedb.Lock()
+				return
+			}
 
-		defer func() {
-			resourcedb.Resources[resource].InProgress = false
-
-			resourcedb.Unlock()
+			resourcedb.Resources[fname].Prepared = true
 		}()
+	}
 
-		exitError := &exec.ExitError{}
-
-		if errors.As(err, &exitError) {
-			log.Error("Ffmpeg error", zap.Int("ExitCode", exitError.ExitCode()), zap.ByteString("Output", exitError.Stderr))
-
-			return
-		} else if err != nil {
-			log.Error("Ffmpeg run error", zap.String("Err", err.Error()))
-
-			return
-		}
-
-		resourcedb.Resources[resource].Prepared = true
-		resourcedb.Resources[resource].SF = sf
-		resourcedb.Resources[resource].NumMonitors = n
-	}()
-
-	w.Header().Add("Content-Type", "text/plain")
-	fmt.Println("ok")
 }
 
 func rm(w http.ResponseWriter, r *http.Request) {
+	logrq(r, "rm")
+
+	if !requireMethod(w, r, http.MethodGet) {
+		return
+	}
+
 	resource := path.Base(r.URL.Path)
 
 	if _, ok := resourcedb.Resources[resource]; !ok {
@@ -307,6 +322,10 @@ func rm(w http.ResponseWriter, r *http.Request) {
 
 func list(w http.ResponseWriter, r *http.Request) {
 	logrq(r, "list")
+
+	if !requireMethod(w, r, http.MethodGet) {
+		return
+	}
 
 	resourcedb.RLock()
 	defer resourcedb.RUnlock()
