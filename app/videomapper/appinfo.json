@@ -1,7 +1,7 @@
 {
-  "id": "com.senior.app.videomapper",
-  "version": "0.1.2",
-  "vendor": "Senior",
+  "id": "com.electrum.app.videomapper",
+  "version": "0.2.0",
+  "vendor": "Electrum",
   "type": "web",
   "main": "public/index.html",
   "title": "Video Mapper",

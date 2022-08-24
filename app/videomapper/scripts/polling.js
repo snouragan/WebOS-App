@@ -19,7 +19,7 @@ function startPolling() {
                 handleCommand(data);
             }
         }).catch(e => {
-            log(commandsContext, 'Failed to fetch command. Reason: ' + e, ERROR);
+            log(commandsContext, 'Failed to fetch command from. Reason: ' + e, ERROR);
         });
     }, POLL_RATE);
 }
@@ -61,14 +61,14 @@ function handleCommand(command) {
         return seekVideo(parseInt(command.pos));
     }
 
-    if (command.command === 'load' && command.src) {
+    if (command.command === 'load' && command.src && command.playid && command.pauseid) {
         let fileType = command.src.split('.')[command.src.split('.').length - 1].toLowerCase();
 
         if(fileType === 'png' || fileType === 'jpg' || fileType === 'jpeg') {
             return loadImage(command.src);
         }
 
-        return loadVideo(command.src)
+        return loadVideo(command.src, command.playid, command.pauseid);
     }
 
     return log(commandsContext, 'Unknown command: ' + command.command, WARN);

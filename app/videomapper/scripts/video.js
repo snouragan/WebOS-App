@@ -1,10 +1,16 @@
 // Store video player and image elements:
 const videoElement = document.getElementById("video");
-const imageElement = document.querySelector("img.fullscreen");
+const imageElement = document.querySelector("div.imgbg");
 
 // Object to store video file and image:
 let videoFile = undefined;
-let iamgeFile = undefined;
+let imageFile = undefined;
+
+// PLay ID
+let playID = '';
+
+// Pause ID
+let pauseID = '';
 
 // Flag for deciding between video and image:
 let displayVideo = true;
@@ -53,7 +59,9 @@ function seekVideo(position) {
 /**
  * Fetch video file and save as blob.
  */
-function loadVideo(src) {
+function loadVideo(src, play, pause) {
+    playID = play;
+    pauseID = pause;
     stopPolling();
     fetch('http://' + SERVER_IP + src, {
         method: 'GET'
@@ -79,7 +87,7 @@ function loadImage(src) {
         imageElement.classList.add('visible');
         imageFile = blob;
         let urlCreator = window.URL || window.webkitURL;
-        imageElement.src = urlCreator.createObjectURL(imageFile);
+        imageElement.style.backgroundImage = 'url(' + urlCreator.createObjectURL(imageFile) + ')';
         log(videoContext, 'Loaded image: ' + src, INFO);
         startPolling();
     }).catch(e => {
@@ -96,9 +104,12 @@ function syncPlay() {
         return;
     }
     stopPolling();
-    fetch('http://' + SERVER_IP + '/sync', {
+    fetch('http://' + SERVER_IP + '/sync?id=' + playID, {
         method: 'GET'
     }).then(res => {
+        if (res.status !== 200) {
+            throw 'No sync';
+        }
         videoElement.play().catch(() => {
             log(videoContext, 'Error playing video', ERROR);
         });
@@ -117,7 +128,7 @@ function syncCurrentPosition() {
         return;
     }
     stopPolling();
-    fetch('http://' + SERVER_IP + '/sync', {
+    fetch('http://' + SERVER_IP + '/sync?id=' + pauseID, {
         method: 'POST',
         body: JSON.stringify({ 'time': videoElement.currentTime })
     }).then(res => res.json()).then(data => {

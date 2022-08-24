@@ -80,6 +80,27 @@ div.container {
     -webkit-justify-content: start;
 }
 
+div.imgbg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: auto;
+    width: auto;
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    display: none;
+}
+
+div.imgbg.visible {
+    display: block;
+    z-index: 3;
+}
+
 video#video {
     position: fixed;
     top: 0;
@@ -88,22 +109,4 @@ video#video {
     bottom: 0;
     height: auto;
     width: auto;
-}
-
-img.fullscreen {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-
-    width: auto;
-    height: auto;
-
-    display: none;
-}
-
-img.fullscreen.visible {
-    display: block;
-    z-index: 3;
 }
