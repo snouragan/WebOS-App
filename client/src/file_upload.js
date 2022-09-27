@@ -1,3 +1,5 @@
+let ip = '192.168.96.214'
+
 let box = document.getElementById("box");
 let list = {};
 
@@ -128,7 +130,7 @@ document.querySelector('.addfile').addEventListener('click', (event) => {
         console.log(type);
         console.log(title);
 
-        fetch('http://192.168.1.109:8069/ctl/upload',
+        fetch(ip + ':8069/ctl/upload',
             {
                 method: 'POST',
                 body: formData
@@ -149,12 +151,21 @@ document.querySelector('.addfile').addEventListener('change', (event) => {
     }
 });
 
+document.querySelector('.filelist').addEventListener('click', (event) => {
+    if (event.target.classList.contains('thumbnail')) {
+        let nr = event.target.id.split('thumbnail')[1];
+        src = thumbnailKeys[nr];
+        console.log(src);
+        event.stopPropagation();
+    }
+});
+
 let thumbnailKeys = [];
 
 (function getList() {
     const filelist = document.querySelector('.filelist');
 
-    fetch('http://192.168.1.109:8069/ctl/list')
+    fetch('http://' + ip + ':8069/ctl/list')
         .then(res => res.json())
         .then(data => {
             for (let key in data.resources) {
@@ -170,12 +181,16 @@ let thumbnailKeys = [];
     setTimeout(getList, 5000);
 })();
 
+let i = 0;
+
 function addThumbnail(link) {
-    let thumbnailURL = "http://192.168.1.109:8069".concat(link);
+    let thumbnailURL = 'http://' + ip + ":8069".concat(link);
 
     let thumbnail = document.createElement('div');
     thumbnail.classList.add('thumbnail');
     thumbnail.classList.add('thumbnail');
+    thumbnail.id = 'thumbnail' + i;
+    i++;
     console.log("url('" + thumbnailURL + "')");
     thumbnail.style.backgroundImage = "url('" + thumbnailURL + "')";
     // // thumbnail.style.backgroundImage = 'url(/home/snou/Pictures/rat-car-9553952.png)';
