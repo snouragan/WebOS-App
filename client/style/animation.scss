@@ -1,0 +1,97 @@
+$vodafonered: #e60000;
+$vodafoneredhalf: #e6000080;
+
+$dark: rgb(51, 51, 51);
+
+@mixin sp-layout {
+    @media screen and (max-width: 750px) {
+      @content;
+    }
+  }
+  
+  @function random_range($min, $max) {
+    $rand: random();
+    $random_range: $min + floor($rand * (($max - $min) + 1));
+    @return $random_range;
+  }
+  
+  .lines {
+    position: fixed;
+    top: -30%;
+    left: 0;
+    width: 100%;
+    height: 200%;
+    transform: rotate(-90deg);
+    z-index: 0;
+  }
+  
+  .line {
+    $line-count: 10;
+    --line-length: 6em;
+    --line-height: 2px;
+    --fall-duration: 9s;
+    --fade-duration: var(--fall-duration);
+  
+    z-index: 0;
+    position: absolute;
+    top: var(--top-offset);
+    left: 0;
+    width: var(--line-length);
+    height: var(--line-height);
+    color: $vodafonered;
+    background: linear-gradient(45deg, $vodafonered, transparent);
+    border-radius: 50%;
+    filter: drop-shadow(0 0 6px $vodafonered);
+    transform: translate3d(104em, 0, 0);
+    animation: fall var(--fall-duration) var(--fall-delay) linear infinite, fade var(--fade-duration) var(--fall-delay) ease-out infinite;
+    
+    @include sp-layout {
+      // For mobile performance, fade animation will be removed QAQ
+      animation: fall var(--fall-duration) var(--fall-delay) linear infinite;
+    }
+  
+    @for $i from 1 through $line-count {
+      &:nth-child(#{$i}) {
+        --line-length: #{random_range(1000em, 1500em) / 100};
+        --top-offset: #{random_range(0vh, 20000vh) / 100};
+        --fall-duration: #{random_range(6000, 12000s) / 1000};
+        --fall-delay: #{random_range(0, 10000s) / 1000};
+      }
+    }
+  
+  }
+  
+  @keyframes fall {
+    to {
+      transform: translate3d(-30em, 0, 0);
+    }
+  }
+  
+  @keyframes fade {
+    0%, 50% {
+      width: var(--line-length);
+      opacity: 1;
+    }
+  
+    70%, 80% {
+      width: 0;
+      opacity: 0.4;
+    }
+  
+    100% {
+      width: 0;
+      opacity: 0;
+    }
+  }
+
+.logo, .logo-text {
+    position: absolute;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(16px 16px 20px $vodafonered);
+}
+
+.logo-text {
+    visibility: visible;
+}

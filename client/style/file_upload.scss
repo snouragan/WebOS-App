@@ -1,0 +1,140 @@
+$vodafonered: rgba(230, 0, 0, 1);
+$dark: rgb(51, 51, 51);
+
+.box,
+.largebox {
+    position: absolute;
+    width: 5em;
+    height: 5em;
+    cursor: pointer;
+
+    right: 5%;
+    bottom: 5%;
+
+    border-radius: 3%;
+    transition: all 1s;
+    user-select: none;
+}
+
+.box {
+    & .filelist {
+        visibility: hidden;
+    }
+
+    & .addfile {
+        visibility: hidden;
+    }
+
+    &:before {
+        position: absolute;
+        content: 'files';
+    }
+}
+
+.largebox {
+
+    width: 40vw;
+    height: 80vh;
+
+    background-color: $dark;
+
+    & .addfile {
+        width: 40%;
+        height: 90%;
+
+        background: transparent;
+        border: 1px dotted;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 10%;
+
+        cursor: unset;
+        overflow: none;
+        // visibility: hidden;
+
+        & .files {
+            width: 80%;
+        }
+
+        & select {
+            $glass: rgba(255, 255, 255, 0.2);
+            $glass-icon: rgba(255, 255, 255, 0.3);
+
+            width: 90%;
+            height: 10%;
+
+            /* Reset */
+            appearance: none;
+            border: 0;
+            outline: 0;
+            font: inherit;
+
+            padding: 0 4em 0 1em;
+            background: url(https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg) no-repeat right 0.8em center / 1.4em,
+                linear-gradient(to left, $glass-icon 3em, $glass 3em);
+            color: white;
+            border-radius: 0.25em;
+            box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
+
+            cursor: pointer;
+            // visibility: hidden;
+
+            option {
+                color: inherit;
+                background-color: transparent;
+            }
+
+            &:focus {
+                outline: none;
+            }
+
+            &::-ms-expand {
+                display: none;
+            }
+        }
+
+        & .upload {
+            width: 50%;
+            height: 20%;
+            background: white;
+            cursor: pointer;
+        }
+    }
+
+    & .filelist {
+        width: 40%;
+        height: 90%;
+
+        background: transparent;
+        border: 1px dotted;
+
+        // visibility: hidden;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        scrollbar-width: none;
+        overflow: hidden;
+        overflow-y: scroll;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 5%;
+
+        & .thumbnail {
+            width: 40%;
+            height: 30%;
+
+            background-color: transparent;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+    }
+
+}

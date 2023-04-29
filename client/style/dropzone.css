@@ -1,0 +1,80 @@
+/* DROP ZONE normal  */
+.drop-zone {
+  width: 12.5%;
+  height: 25%;
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 4px dashed white;
+  border-radius: 10px;
+  z-index: 1;
+}
+
+.drop-zone.dragging {
+  border: 4px solid #009578;
+}
+
+span.drop-zone-prompt {
+  text-align: center;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  color: grey;
+}
+
+input[type=file] {
+  display: none;
+}
+
+/* whole screen */
+/* .drop-zone {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: transparent;
+    pointer-events: none;
+}
+
+.drop-zone.dragging {
+    background-color: #000000be;
+}
+
+div.drop-zone.dragging > div.drop-zone-deco {
+    width: 90%;
+    height: 90%;
+    border: 10px dashed white;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+span.drop-zone-prompt {
+    display: none;
+    text-align: center;
+    margin: 0;
+    font-family: "Quicksand", sans-serif;
+    font-weight: 500;
+    font-size: 50px;
+    color: white;
+}
+
+div.drop-zone.dragging span.drop-zone-prompt {
+    display: block;
+    text-align: center;
+    margin: 0;
+    font-family: "Quicksand", sans-serif;
+    font-weight: 500;
+    font-size: 50px;
+    color: white;
+}
+
+input.file-input {
+    display: none;
+} *//*# sourceMappingURL=dropzone.css.map */

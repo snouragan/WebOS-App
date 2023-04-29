@@ -1,0 +1,105 @@
+.box,
+.largebox {
+  position: absolute;
+  width: 5em;
+  height: 5em;
+  cursor: pointer;
+  right: 5%;
+  bottom: 5%;
+  border-radius: 3%;
+  transition: all 1s;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.box .filelist {
+  visibility: hidden;
+}
+.box .addfile {
+  visibility: hidden;
+}
+.box:before {
+  position: absolute;
+  content: "files";
+}
+
+.largebox {
+  width: 40vw;
+  height: 80vh;
+  background-color: rgb(51, 51, 51);
+}
+.largebox .addfile {
+  width: 40%;
+  height: 90%;
+  background: transparent;
+  border: 1px dotted;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10%;
+  cursor: unset;
+  overflow: none;
+}
+.largebox .addfile .files {
+  width: 80%;
+}
+.largebox .addfile select {
+  width: 90%;
+  height: 10%;
+  /* Reset */
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border: 0;
+  outline: 0;
+  font: inherit;
+  padding: 0 4em 0 1em;
+  background: url(https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg) no-repeat right 0.8em center/1.4em, linear-gradient(to left, rgba(255, 255, 255, 0.3) 3em, rgba(255, 255, 255, 0.2) 3em);
+  color: white;
+  border-radius: 0.25em;
+  box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+.largebox .addfile select option {
+  color: inherit;
+  background-color: transparent;
+}
+.largebox .addfile select:focus {
+  outline: none;
+}
+.largebox .addfile select::-ms-expand {
+  display: none;
+}
+.largebox .addfile .upload {
+  width: 50%;
+  height: 20%;
+  background: white;
+  cursor: pointer;
+}
+.largebox .filelist {
+  width: 40%;
+  height: 90%;
+  background: transparent;
+  border: 1px dotted;
+  scrollbar-width: none;
+  overflow: hidden;
+  overflow-y: scroll;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 5%;
+}
+.largebox .filelist::-webkit-scrollbar {
+  display: none;
+}
+.largebox .filelist .thumbnail {
+  width: 40%;
+  height: 30%;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}/*# sourceMappingURL=file_upload.css.map */

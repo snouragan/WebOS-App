@@ -1,0 +1,156 @@
+.room {
+  position: absolute;
+  width: 6%;
+  height: 25%;
+  right: 10px;
+  top: 10px;
+  border: 1px solid white;
+  overflow: hidden;
+  font-size: larger;
+}
+
+.room::after {
+  font-size: 50px;
+  content: "MAP";
+  transform: rotateZ(45deg);
+  z-index: -1;
+}
+
+.component {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+}
+
+.door {
+  width: 15%;
+  height: 3%;
+}
+
+.rackdoor {
+  top: 0;
+  right: 15%;
+}
+
+.backdoor {
+  bottom: 0;
+  right: 15%;
+}
+
+.walltable {
+  width: 15%;
+  height: 30%;
+}
+
+.racktable {
+  left: 0;
+  top: 10%;
+  box-shadow: 1px 2px 1px 1px grey inset, -1px 1px 3px 1px grey;
+}
+
+.backtable {
+  bottom: 0;
+  left: 0;
+  box-shadow: 1px 0px 1px 1px grey inset;
+}
+
+.rack {
+  width: 20%;
+  height: 10%;
+  top: 0;
+  left: 0;
+  background: dimgray;
+  box-shadow: 1px 1px 3px 1px black inset;
+  border-radius: 15%;
+}
+
+.couch {
+  width: 10%;
+  height: 30%;
+  bottom: 30%;
+  left: 0;
+  background-color: crimson;
+  box-shadow: 1px 0px 1px 3px darkred inset;
+}
+
+.tables {
+  position: absolute;
+  width: 10%;
+  height: 30%;
+  bottom: 30%;
+  left: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2px;
+}
+.tables .couchtable {
+  width: 80%;
+  height: 15%;
+  border-radius: 15px 50px;
+}
+
+.pillar {
+  width: 20%;
+  height: 10%;
+  border-radius: 50%;
+  box-shadow: 0 0 5px 1px black inset;
+}
+
+.rackpillar {
+  top: 25%;
+}
+
+.backpillar {
+  bottom: 25%;
+}
+
+.desk {
+  width: 10%;
+  height: 20%;
+  border-radius: 1px;
+}
+
+.setup {
+  background: transparent;
+  width: 30%;
+  height: 15%;
+  top: 22.5%;
+}
+.setup :nth-child(1) {
+  bottom: 9%;
+}
+.setup :nth-child(2) {
+  transform: rotateZ(130deg);
+  right: 5%;
+  bottom: 25%;
+}
+.setup :nth-child(3) {
+  right: 5%;
+  transform: rotateZ(50deg);
+  top: 25%;
+}
+.setup :nth-child(4) {
+  top: 9%;
+}
+.setup :nth-child(5) {
+  transform: rotateZ(130deg);
+  left: 5%;
+  top: 25%;
+}
+.setup :nth-child(6) {
+  transform: rotateZ(50deg);
+  left: 5%;
+  bottom: 25%;
+}
+
+.setuptv {
+  position: absolute;
+  width: 30%;
+  height: 15%;
+  background-color: rgb(0, 0, 0);
+  border-radius: 5%;
+}/*# sourceMappingURL=visual.css.map */
