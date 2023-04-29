@@ -1,8 +1,19 @@
-// Store video player element:
+// Store video player and image elements:
 const videoElement = document.getElementById("video");
+const imageElement = document.querySelector("div.imgbg");
 
-// Object to store video file:
+// Object to store video file and image:
 let videoFile = undefined;
+let imageFile = undefined;
+
+// PLay ID
+let playID = '';
+
+// Pause ID
+let pauseID = '';
+
+// Flag for deciding between video and image:
+let displayVideo = true;
 
 // Flag for looping videos:
 let loop = true;
@@ -14,14 +25,21 @@ const videoContext = 'VIDEO';
  * Resume video playback.
  */
 function resumePlayback() {
-    sync();
+    if (!displayVideo) {
+        return;
+    }
+    syncPlay();
 }
 
 /**
  * Pause video playback.
  */
 function pausePlayback() {
+    if (!displayVideo) {
+        return;
+    }
     videoElement.pause();
+    syncCurrentPosition();
 }
 
 /**
@@ -30,38 +48,95 @@ function pausePlayback() {
  * @param {*} position - position to seek to.
  */
 function seekVideo(position) {
+    if (!displayVideo) {
+        return;
+    }
+    videoElement.pause();
     videoElement.currentTime = position;
+    syncPlay();
 }
 
 /**
  * Fetch video file and save as blob.
  */
-function loadVideo(src) {
+function loadVideo(src, play, pause) {
+    playID = play;
+    pauseID = pause;
+    stopPolling();
     fetch('http://' + SERVER_IP + src, {
         method: 'GET'
     }).then(res => res.blob()).then(blob => {
+        displayVideo = true;
+        imageElement.classList.remove('visible');
         videoFile = blob;
         display(videoFile, videoElement);
         log(videoContext, 'Loaded video: ' + src, INFO);
-        sync();
+        syncPlay();
     }).catch(e => {
         log(videoContext, 'Failed to fetch video. Reason: ' + e, ERROR);
+        startPolling();
+    });
+}
+
+function loadImage(src) {
+    stopPolling();
+    fetch('http://' + SERVER_IP + src, {
+        method: 'GET'
+    }).then(res => res.blob()).then(blob => {
+        displayVideo = false;
+        imageElement.classList.add('visible');
+        imageFile = blob;
+        let urlCreator = window.URL || window.webkitURL;
+        imageElement.style.backgroundImage = 'url(' + urlCreator.createObjectURL(imageFile) + ')';
+        log(videoContext, 'Loaded image: ' + src, INFO);
+        startPolling();
+    }).catch(e => {
+        log(videoContext, 'Failed to fetch image. Reason: ' + e, ERROR);
+        startPolling();
     });
 }
 
 /**
- * Synchronize player with server.
+ * Synchronize player with other devices.
  */
-function sync() {
-    fetch('http://' + SERVER_IP + '/sync', {
+function syncPlay() {
+    if (!displayVideo) {
+        return;
+    }
+    stopPolling();
+    fetch('http://' + SERVER_IP + '/sync?id=' + playID, {
         method: 'GET'
     }).then(res => {
+        if (res.status !== 200) {
+            throw 'No sync';
+        }
         videoElement.play().catch(() => {
             log(videoContext, 'Error playing video', ERROR);
         });
+        startPolling();
     }).catch(e => {
         log(videoContext, 'Failed to sync. Reason: ' + e, ERROR);
+        startPolling();
     });
+}
+
+/**
+ * Synchronize pause position with other devices.
+ */
+function syncCurrentPosition() {
+    if (!displayVideo) {
+        return;
+    }
+    stopPolling();
+    fetch('http://' + SERVER_IP + '/sync?id=' + pauseID, {
+        method: 'POST',
+        body: JSON.stringify({ 'time': videoElement.currentTime })
+    }).then(res => res.json()).then(data => {
+        if (data && data.time) {
+            videoContext.currentTime = data.time;
+            startPolling();
+        }
+    })
 }
 
 /**
@@ -92,9 +167,15 @@ videoElement.addEventListener('ended', () => {
     videoElement.currentTime = 0;
     if (loop) {
         videoElement.currentTime = 0;
-        sync();
+        syncPlay();
     }
 });
 
-// Load default video:
-loadVideo('/split/sample.6.stretch.webm');
+
+window.addEventListener('load', () => {
+    log(videoContext, 'Loaded video player', INFO);
+    // Load default video:
+    // loadVideo('/split/sample.6.stretch.webm');
+
+    startPolling();
+});
