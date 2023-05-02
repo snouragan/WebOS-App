@@ -11,17 +11,17 @@ func tvid(ip string) int {
 	ip = m[0]
 
 	switch ip {
-	case "192.168.1.21":
+	case "192.168.1.67":
 		return 0
-	case "192.168.1.20":
+	case "192.168.1.132":
 		return 1
-	case "192.168.1.19":
+	case "192.168.1.202":
 		return 2
-	case "192.168.1.18":
+	case "192.168.1.203":
 		return 3
-	case "192.168.1.17":
+	case "192.168.1.204":
 		return 4
-	case "192.168.1.16":
+	case "192.168.1.135":
 		return 5
 	}
 
@@ -31,17 +31,17 @@ func tvid(ip string) int {
 func idtv(tv int) (ip string) {
 	switch tv {
 	case 0:
-		return "192.168.1.21"
+		return "192.168.1.67"
 	case 1:
-		return "192.168.1.20"
+		return "192.168.1.132"
 	case 2:
-		return "192.168.1.19"
+		return "192.168.1.202"
 	case 3:
-		return "192.168.1.18"
+		return "192.168.1.203"
 	case 4:
-		return "192.168.1.17"
+		return "192.168.1.204"
 	case 5:
-		return "192.168.1.16"
+		return "192.168.1.135"
 	}
 
 	panic(errors.New("not a tv number"))
